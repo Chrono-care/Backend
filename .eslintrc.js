@@ -30,10 +30,10 @@ module.exports = {
       }
     }
   ],
-    '@typescript-eslint/explicit-function-return-type': 'warn',
+    '@typescript-eslint/explicit-function-return-type': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'warn',
-    "no-unused-vars": 'warn',
-    "@typescript-eslint/no-unused-vars": 'warn'
+    '@typescript-eslint/no-explicit-any': 'error',
+    "no-unused-vars": 'error',
+    "@typescript-eslint/no-unused-vars": 'error'
   },
 };
