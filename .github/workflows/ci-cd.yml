@@ -8,11 +8,11 @@ on:
 
 jobs:
   lint-and-format:
-    runs-on: lts-alpine3.19
+    runs-on: ubuntu-latest
+    container:
+      image: node:14-alpine
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Run Linter
@@ -21,12 +21,11 @@ jobs:
         run: yarn format
 
   build-and-test:
-    needs: lint-and-format
-    runs-on: lts-alpine3.19
+    runs-on: ubuntu-latest
+    container:
+      image: node:14-alpine
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Build Project
@@ -36,11 +35,13 @@ jobs:
       - name: Run e2e Tests
         run: yarn test:e2e
 
-  # deploy:
-  #   needs: build-and-test
-  #   runs-on: ubuntu-latest
-  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Deploy to Server
-  #       run: echo "#"
+# deploy:
+#   needs: build-and-test
+#   runs-on: ubuntu-latest
+#   container:
+#     image: node:14-alpine
+#   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+#   steps:
+#     - uses: actions/checkout@v2
+#     - name: Deploy to Server
+#       run: echo "Deploy commands go here"
