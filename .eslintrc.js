@@ -18,7 +18,8 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
-    '@typescript-eslint/explicit-function-return-type': 2,
+    '@typescript-eslint/interface-name-prefix': 2,
+    '@typescript-eslint/explicit-function-return-type': 'on',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 2,
     "no-unused-expressions": 1,
