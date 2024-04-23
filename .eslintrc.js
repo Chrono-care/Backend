@@ -18,7 +18,18 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
-    '@typescript-eslint/interface-name-prefix': 'warn',
+    
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "interface",
+      "format": ["PascalCase"],
+      "custom": {
+        "regex": "^I[A-Z]",
+        "match": true
+      }
+    }
+  ],
     '@typescript-eslint/explicit-function-return-type': 'warn',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
