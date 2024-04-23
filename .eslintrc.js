@@ -18,11 +18,22 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
-    '@typescript-eslint/interface-name-prefix': 'on',
-    '@typescript-eslint/explicit-function-return-type': 'on',
+    
+  "@typescript-eslint/naming-convention": [
+    "error",
+    {
+      "selector": "interface",
+      "format": ["PascalCase"],
+      "custom": {
+        "regex": "^I[A-Z]",
+        "match": true
+      }
+    }
+  ],
+    '@typescript-eslint/explicit-function-return-type': 'warn',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'on',
-    "no-unused-vars": 'on',
-    "@typescript-eslint/no-unused-vars": 'on'
+    '@typescript-eslint/no-explicit-any': 'warn',
+    "no-unused-vars": 'warn',
+    "@typescript-eslint/no-unused-vars": 'warn'
   },
 };
