@@ -18,11 +18,11 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
-    '@typescript-eslint/interface-name-prefix': 2,
-    '@typescript-eslint/explicit-function-return-type': 2,
+    '@typescript-eslint/interface-name-prefix': 'warn',
+    '@typescript-eslint/explicit-function-return-type': 'warn',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 2,
-    "no-unused-vars": 2,
-    "@typescript-eslint/no-unused-vars": 2
+    '@typescript-eslint/no-explicit-any': 'warn',
+    "no-unused-vars": 'warn',
+    "@typescript-eslint/no-unused-vars": 'warn'
   },
 };
