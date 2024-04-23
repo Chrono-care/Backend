@@ -10,7 +10,7 @@ jobs:
   lint-and-format:
     runs-on: ubuntu-latest
     container:
-      image: node:14-alpine
+      image: node:lts-alpine3.19
     steps:
       - uses: actions/checkout@v2
       - name: Install Dependencies
@@ -23,7 +23,7 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     container:
-      image: node:14-alpine
+      image: node:lts-alpine3.19
     steps:
       - uses: actions/checkout@v2
       - name: Install Dependencies
@@ -39,7 +39,7 @@ jobs:
 #   needs: build-and-test
 #   runs-on: ubuntu-latest
 #   container:
-#     image: node:14-alpine
+#     image: node:lts-alpine3.19
 #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 #   steps:
 #     - uses: actions/checkout@v2
