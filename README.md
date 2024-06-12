@@ -91,7 +91,7 @@
 - Response: Object with message property
 </details>
 <details>
-<summary>DELETE /accounts/delete/me/<summary>
+<summary>DELETE /accounts/delete/me/ </summary>
 - Requires authentication
 - Response: Object with message property
 </details>
