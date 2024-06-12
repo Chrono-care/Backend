@@ -1,11 +1,17 @@
-# Account API Routes:
+# Account API Routes
 
 <details>
 <summary>GET /accounts</summary>
 
 ## Query Parameters
 
-### Pagination params
+### Response
+
+```json
+[{}]
+```
+
+### Query params
 
 - page: Page number (default: 0) (e.g. page=2)
 - size: Number of items per page (default: 15) (e.g. size=20)
@@ -24,10 +30,6 @@
   - property: Property to filter by
   - value: Value to filter by
   - method: Filtering method (eq, ne, gt, gte, lt, lte, like, nlike, in, nin, isnull, isnotnull)
-
-### Response
-
-Array of Account object
 
 #### Account properties
 
@@ -89,7 +91,7 @@ Array of Account object
 - Response: Object with message property
 </details>
 <details>
-<summary>DELETE /accounts/delete/me/summary>
+<summary>DELETE /accounts/delete/me/<summary>
 - Requires authentication
 - Response: Object with message property
 </details>
