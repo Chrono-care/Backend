@@ -12,7 +12,6 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
-import { AccountsService } from './accounts.service';
 import { Account } from './entities/account.entity';
 import { Response } from 'express';
 import { CreateAccountDto } from './dto/create-account.dto';
@@ -28,10 +27,10 @@ import {
   Filtering,
   FilteringParams,
 } from './decorators/filteringParams.decorator';
-import { GrpcMethod } from '@nestjs/microservices';
+import { AccountsService } from './accounts.service';
 
 const authorizedFields = [
-  'id',
+  'uuid',
   'email',
   'firstname',
   'lastname',
@@ -39,12 +38,21 @@ const authorizedFields = [
   'karma',
   'validated',
   'global_bantime',
-]
+];
 
 @Controller('accounts')
 export class AccountsController {
-  constructor(private readonly AccountsService: AccountsService) {}
-  
+  constructor(private readonly accountsService: AccountsService) {}
+
+  /**
+   * Get all accounts.
+   *
+   * @param response - The HTTP response object.
+   * @param pagination - The pagination parameters.
+   * @param sort - The sorting parameters.
+   * @param filter - The filtering parameters.
+   * @returns A Promise that resolves to the HTTP response.
+   */
   @Get()
   async getAll(
     @Res() response: Response,
@@ -55,11 +63,17 @@ export class AccountsController {
     return response
       .status(HttpStatus.OK)
       .json(
-        await this.AccountsService.getAllAccounts(pagination, sort, filter),
+        await this.accountsService.getAllAccounts(pagination, sort, filter),
       );
   }
 
-  // Whoami
+  /**
+   * Get the current account information.
+   *
+   * @param response - The HTTP response object.
+   * @param request - The account information from the request.
+   * @returns A Promise that resolves to the HTTP response.
+   */
   @Get('/info/me')
   @UseGuards(JwtAuthGuard)
   async getCurrentAccount(
@@ -68,29 +82,44 @@ export class AccountsController {
   ): Promise<Response> {
     return response
       .status(HttpStatus.OK)
-      .json(await this.AccountsService.getAccountById(request.account.uuid));
+      .json(await this.accountsService.getAccountById(request.account.uuid));
   }
 
+  /**
+   * Create a new account.
+   *
+   * @param response - The HTTP response object.
+   * @param account - The account data.
+   * @returns A Promise that resolves to the HTTP response.
+   */
   @Post('/create')
   async create(
     @Res() response: Response,
     @Body(ValidationPipe) account: CreateAccountDto,
   ): Promise<Response> {
     const newAccount: Account =
-      await this.AccountsService.createAccount(account);
+      await this.accountsService.createAccount(account);
     return response.status(HttpStatus.CREATED).json({
       message: 'Bienvenue ! Votre compte a été créé avec succès.',
       newAccount,
     });
   }
 
+  /**
+   * Update an account by UUID.
+   *
+   * @param response - The HTTP response object.
+   * @param uuid - The UUID of the account to update.
+   * @param account - The updated account data.
+   * @returns A Promise that resolves to the HTTP response.
+   */
   @Patch('/update/uuid/:uuid')
   async update(
     @Res() response: Response,
     @Param('uuid') uuid: string,
     @Body(ValidationPipe) account: UpdateAccountDto,
   ): Promise<Response> {
-    const updatedAccount: Account = await this.AccountsService.updateAccount(
+    const updatedAccount: Account = await this.accountsService.updateAccount(
       uuid,
       account,
     );
@@ -100,6 +129,14 @@ export class AccountsController {
     });
   }
 
+  /**
+   * Update the current account.
+   *
+   * @param response - The HTTP response object.
+   * @param request - The account information from the request.
+   * @param account - The updated account data.
+   * @returns A Promise that resolves to the HTTP response.
+   */
   @Patch('/update/me')
   @UseGuards(JwtAuthGuard)
   async updateCurrentAccount(
@@ -107,7 +144,7 @@ export class AccountsController {
     @Request() request: IAccountInfoFromRequest,
     @Body(ValidationPipe) account: UpdateAccountDto,
   ): Promise<Response> {
-    const updatedAccount: Account = await this.AccountsService.updateAccount(
+    const updatedAccount: Account = await this.accountsService.updateAccount(
       request.account.uuid,
       account,
     );
@@ -117,24 +154,38 @@ export class AccountsController {
     });
   }
 
+  /**
+   * Delete an account by UUID.
+   *
+   * @param response - The HTTP response object.
+   * @param uuid - The UUID of the account to delete.
+   * @returns A Promise that resolves to the HTTP response.
+   */
   @Delete('/delete/uuid/:uuid')
   async delete(
     @Res() response: Response,
     @Param('uuid') uuid: string,
   ): Promise<Response> {
-    await this.AccountsService.deleteAccount(uuid);
+    await this.accountsService.deleteAccount(uuid);
     return response.status(HttpStatus.OK).json({
       message: 'Utilisateur supprimé avec succès.',
     });
   }
 
+  /**
+   * Delete the current account.
+   *
+   * @param response - The HTTP response object.
+   * @param request - The account information from the request.
+   * @returns A Promise that resolves to the HTTP response.
+   */
   @Delete('/delete/me')
   @UseGuards(JwtAuthGuard)
   async deleteCurrentAccount(
     @Res() response: Response,
     @Request() request: IAccountInfoFromRequest,
   ): Promise<Response> {
-    await this.AccountsService.deleteAccount(request.account.uuid);
+    await this.accountsService.deleteAccount(request.account.uuid);
     return response.status(HttpStatus.OK).json({
       message: 'Utilisateur supprimé avec succès.',
     });

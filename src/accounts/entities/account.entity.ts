@@ -26,7 +26,7 @@ export class Account {
   @Exclude({ toPlainOnly: true })
   @Column({ nullable: false })
   password: string;
-  
+
   @Column({ nullable: false })
   phone: string;
 
@@ -41,16 +41,15 @@ export class Account {
 
   @BeforeInsert()
   @BeforeUpdate()
-  async hashPassword() {
+  async hashPassword(): Promise<void> {
     this.password = await argon2.hash(this.password);
   }
 
-  toJSON() {
+  toJSON(): Record<string, unknown> {
     return instanceToPlain(this);
   }
 
   async comparePassword(candidatePassword: string): Promise<boolean> {
-    const result = await argon2.verify(this.password, candidatePassword);
-    return result;
+    return await argon2.verify(this.password, candidatePassword);
   }
 }

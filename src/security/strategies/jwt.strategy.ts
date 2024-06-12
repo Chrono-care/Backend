@@ -13,7 +13,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: {
+    id: string;
+    email: string;
+  }): Promise<{ userId: string; email: string }> {
     if (!payload) {
       Logger.error('No payload', 'JwtStrategy (validate)');
       throw new UnauthorizedException();
