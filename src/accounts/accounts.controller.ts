@@ -19,36 +19,44 @@ import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { JwtAuthGuard } from 'src/security/strategies/guards/jwt-auth.guard';
 import { IAccountInfoFromRequest } from 'src/security/interfaces/accountInfoFromRequest.interface';
+import {
+  Pagination,
+  PaginationParams,
+} from './decorators/paginationParams.decorator';
+import { Sorting, SortingParams } from './decorators/sortingParams.decorator';
+import {
+  Filtering,
+  FilteringParams,
+} from './decorators/filteringParams.decorator';
+import { GrpcMethod } from '@nestjs/microservices';
 
-@Controller('Accounts')
+const authorizedFields = [
+  'id',
+  'email',
+  'firstname',
+  'lastname',
+  'phone',
+  'karma',
+  'validated',
+  'global_bantime',
+]
+
+@Controller('accounts')
 export class AccountsController {
   constructor(private readonly AccountsService: AccountsService) {}
-
+  
   @Get()
-  async getAll(@Res() response: Response): Promise<Response> {
-    return response
-      .status(HttpStatus.OK)
-      .json(await this.AccountsService.getAllAccounts());
-  }
-
-  @Get('/info/uuid/:uuid')
-  async getById(
+  async getAll(
     @Res() response: Response,
-    @Param('uuid') uuid: string,
+    @PaginationParams({}) pagination: Pagination,
+    @SortingParams(authorizedFields) sort?: Sorting,
+    @FilteringParams(authorizedFields) filter?: Filtering,
   ): Promise<Response> {
     return response
       .status(HttpStatus.OK)
-      .json(await this.AccountsService.getAccountById(uuid));
-  }
-
-  @Get('/info/email/:email')
-  async getByEmail(
-    @Res() response: Response,
-    @Param('email') email: string,
-  ): Promise<Response> {
-    return response
-      .status(HttpStatus.OK)
-      .json(await this.AccountsService.getAccountByEmail(email));
+      .json(
+        await this.AccountsService.getAllAccounts(pagination, sort, filter),
+      );
   }
 
   // Whoami
@@ -68,7 +76,8 @@ export class AccountsController {
     @Res() response: Response,
     @Body(ValidationPipe) account: CreateAccountDto,
   ): Promise<Response> {
-    const newAccount: Account = await this.AccountsService.createAccount(account);
+    const newAccount: Account =
+      await this.AccountsService.createAccount(account);
     return response.status(HttpStatus.CREATED).json({
       message: 'Bienvenue ! Votre compte a été créé avec succès.',
       newAccount,
@@ -81,7 +90,10 @@ export class AccountsController {
     @Param('uuid') uuid: string,
     @Body(ValidationPipe) account: UpdateAccountDto,
   ): Promise<Response> {
-    const updatedAccount: Account = await this.AccountsService.updateAccount(uuid, account);
+    const updatedAccount: Account = await this.AccountsService.updateAccount(
+      uuid,
+      account,
+    );
     return response.status(HttpStatus.OK).json({
       message: 'Utilisateur mis à jour avec succès.',
       updatedAccount,

@@ -8,6 +8,11 @@ import { Account } from './entities/account.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { Pagination } from './decorators/paginationParams.decorator';
+import { Sorting } from './decorators/sortingParams.decorator';
+import { Filtering } from './decorators/filteringParams.decorator';
+import { PaginatedResource } from './dto/paginated-resource.dto';
+import { getOrder, getWhere } from './helpers/orderORM.helper';
 
 @Injectable()
 export class AccountsService {
@@ -29,12 +34,28 @@ export class AccountsService {
     }
   }
 
-  async getAllAccounts(): Promise<Account[]> {
-    const Accounts = await this.AccountsRepository.find();
-    if (Accounts === null) {
+  async getAllAccounts(
+      { page, limit, size, offset }: Pagination,
+      sort?: Sorting,
+      filter?: Filtering,
+  ): Promise<PaginatedResource<Partial<Account>>> {
+    const where = getWhere(filter);
+    const order = getOrder(sort);
+    const [accounts, total] = await this.AccountsRepository.findAndCount({
+      where,
+      order,
+      take: limit,
+      skip: offset,
+    });
+    if (total === 0) {
       throw new NotFoundException(`Aucun utilisateur trouvé.`);
     }
-    return Accounts;
+    return {
+      totalItems: total,
+      items: accounts,
+      page,
+      size,
+    }
   }
 
   async getAccountById(uuid: string): Promise<Account> {
@@ -44,18 +65,6 @@ export class AccountsService {
     if (Account === null) {
       throw new NotFoundException(
         `Aucun utilisateur avec l'uuid ${uuid} n'a été trouvé.`,
-      );
-    }
-    return Account;
-  }
-
-  async getAccountByEmail(email: string): Promise<Account> {
-    const Account = await this.AccountsRepository.findOne({
-      where: { email },
-    });
-    if (!Account) {
-      throw new NotFoundException(
-        `Aucun utilisateur avec l'email ${email} n'a été trouvé.`,
       );
     }
     return Account;
@@ -71,9 +80,9 @@ export class AccountsService {
         `Aucun utilisateur avec l'uuid ${uuid} n'a été trouvé.`,
       );
     }
-    const updatedAccount: Account = (await this.AccountsRepository.findOne({
+    const updatedAccount: Account = await this.AccountsRepository.findOne({
       where: { uuid },
-    }))!;
+    });
     return updatedAccount;
   }
 
