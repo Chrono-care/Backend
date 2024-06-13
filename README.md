@@ -1,37 +1,55 @@
-# Account API Routes
+# Account
+
+## API Routes Documentation
 
 <details>
 <summary>GET /accounts</summary>
 
-## Query Parameters
-
 ### Response
 
 ```json
-[{}]
+{
+  "totalItems": 1,
+  "items": [
+    {
+      "uuid": "6df1446c-6ccf-4cc0-8f8d-c71c4c9d2baa",
+      "email": "test@test.test",
+      "firstname": "Test",
+      "lastname": "Test",
+      "phone": "+33600000000",
+      "karma": 0,
+      "global_bantime": "0",
+      "validated": true
+    }
+  ],
+  "page": 0,
+  "size": 15
+}
 ```
 
-### Query params
+### Query Parameters
+
+#### Pagination
 
 - page: Page number (default: 0) (e.g. page=2)
 - size: Number of items per page (default: 15) (e.g. size=20)
 
-#### Sorting params
+#### Sorting
 
 - sort: Setting for sorting the results. Format = property:direction (e.g. sort=email:asc)
 
   - property: Property to sort by
   - direction: Sorting direction (asc or desc)
 
-#### filtering params
+#### Filtering
 
-- filter: Setting for filtering the results. Format = property:value:method (e.g. filter=email:test@test.fr:eq)
+- filter: Setting for filtering the results. Format = property:method:value (e.g. filter=email:eq:test@test.com)
 
   - property: Property to filter by
   - value: Value to filter by
   - method: Filtering method (eq, ne, gt, gte, lt, lte, like, nlike, in, nin, isnull, isnotnull)
 
-#### Account properties
+#### Available properties
 
 - uuid: string
 - email: string
@@ -41,7 +59,7 @@
 - global_bantime: Timestamp
 - validated: boolean
 
-#### Filtering Methods
+#### Available filtering methods
 
 - eq: Equals
 - neq: Not equals
@@ -56,7 +74,7 @@
 - isnull: Is null
 - isnotnull: Is not null
 
-#### Sorting Methods
+#### Available sorting methods
 
 - asc: Ascending
 - desc: Descending
@@ -65,33 +83,197 @@
 <details>
 <summary>GET /accounts/info/me</summary>
 
-- Requires authentication
-- Response: Account object
+### Response
+
+```json
+{
+  "uuid": "6df1446c-6ccf-4cc0-c71c4c9d2baa",
+  "email": "test.test@test.com",
+  "firstname": "Test",
+  "lastname": "Test",
+  "phone": "+33600000000",
+  "karma": 0,
+  "global_bantime": "0",
+  "validated": false
+}
+```
+
+### Query Parameters
+
+#### Headers
+
+- Authorization: Bearer + valid JWT Token
+
 </details>
 <details>
 <summary>POST /accounts/create</summary>
-- Request Body: CreateAccountDto object
-- Response: Object with message and newAccount properties
+
+### Response
+
+```json
+{
+  "message": "Bienvenue ! Votre compte a été créé avec succès.",
+  "newAccount": {
+    "email": "test@test.fr",
+    "firstname": "Test",
+    "lastname": "Test",
+    "phone": "+33600000000",
+    "uuid": "6df1446c-6ccf-4cc0-c71c4c9d2baa",
+    "karma": 0,
+    "global_bantime": "0",
+    "validated": false
+  }
+}
+```
+
+### Query parameters
+
+#### Body
+
+```json
+{
+  "email": "valid@address.com",
+  "password": "password",
+  "firstname": "Test",
+  "lastname": "Test",
+  "phone": "+33600000000"
+}
+```
+
 </details>
 <details>
-  <summary>PATCH /accounts/update/uuid/:uuid</summary>
-- URL Parameter: uuid (string)
-- Request Body: UpdateAccountDto object
-- Response: Object with message and updatedAccount properties
+<summary>PATCH /accounts/update/uuid/:uuid</summary>
+  
+### Response
+
+```json
+{
+  "message": "Utilisateur mis à jour avec succès.",
+  "updatedAccount": {
+    "uuid": "6df1446c-6ccf-4cc0-c71c4c9d2baa",
+    "email": "new-valid@address.com",
+    "firstname": "Test",
+    "lastname": "Test",
+    "phone": "+33600000000",
+    "karma": 0,
+    "global_bantime": "0",
+    "validated": true
+  }
+}
+```
+
+### Query parameters
+
+#### Body
+
+**All properties are optional, you may only specify what you'd like to change.**
+
+```json
+{
+  "email": "test@test.fr",
+  "firstname": "Test",
+  "lastname": "Test",
+  "phone": "+33600000000"
+}
+```
+
 </details>
 <details>
 <summary>PATCH /accounts/update/me</summary>
-- Requires authentication
-- Request Body: UpdateAccountDto object
-- Response: Object with message and updatedAccount properties
+
+### Response
+
+```json
+{
+  "message": "Utilisateur mis à jour avec succès.",
+  "updatedAccount": {
+    "uuid": "6df1446c-6ccf-4cc0-c71c4c9d2baa",
+    "email": "new-valid@address.com",
+    "firstname": "Test",
+    "lastname": "Test",
+    "phone": "+33600000000",
+    "karma": 0,
+    "global_bantime": "0",
+    "validated": true
+  }
+}
+```
+
+### Query parameters
+
+#### Headers
+
+- Authorization: Bearer + valid JWT Token
+
+#### Body
+
+**All properties are optional, you may only specify what you'd like to change.**
+
+```json
+{
+  "email": "test@test.fr",
+  "firstname": "Test",
+  "lastname": "Test",
+  "phone": "+33600000000"
+}
+```
+
 </details>
 <details>
 <summary>DELETE /accounts/delete/uuid/:uuid</summary>
-- URL Parameter: uuid (string)
-- Response: Object with message property
+
+### Response
+
+```json
+{
+  "message": "Utilisateur supprimé avec succès."
+}
+```
+
+### Query parameters
+
+#### URL Parameter
+
+- uuid (string): The uuid of the user
+
 </details>
 <details>
 <summary>DELETE /accounts/delete/me/ </summary>
-- Requires authentication
-- Response: Object with message property
+### Response
+
+```json
+{
+  "message": "Utilisateur supprimé avec succès."
+}
+```
+
+### Query parameters
+
+#### Headers
+
+- Authorization: Bearer + valid JWT Token
+
+</details>
+<details>
+<summary>POST /login </summary>
+
+### Query Parameters
+
+#### Body
+
+```json
+{
+  "email": "valid@email.com",
+  "password": "password"
+}
+```
+
+### Response
+
+```json
+{
+  "token": "eyJhbRBUr1ru-D6VwUDxuDsXE"
+}
+```
+
 </details>
