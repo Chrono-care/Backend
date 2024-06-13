@@ -4,6 +4,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as fsStore from 'cache-manager-fs-hash';
 import { AccountsModule } from './accounts/accounts.module';
+import { SecurityModule } from './security/security.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { AccountsModule } from './accounts/accounts.module';
       inject: [ConfigService],
     }),
     AccountsModule,
+    SecurityModule,
   ],
   controllers: [],
   providers: [],

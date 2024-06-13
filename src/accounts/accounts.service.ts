@@ -53,7 +53,6 @@ export class AccountsService {
     filter?: Filtering,
   ): Promise<PaginatedResource<Partial<Account>>> {
     const where = getWhere(filter);
-    console.log(typeof where);
     const order = getOrder(sort);
     const [accounts, total] = await this.accountsRepository.findAndCount({
       where,

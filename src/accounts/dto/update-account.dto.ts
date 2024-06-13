@@ -7,13 +7,17 @@ import { Exclude } from 'class-transformer';
 export class UpdateAccountDto extends PartialType(CreateAccountDto) {
   @IsEmpty()
   @Exclude()
-    password: string;
+  password: string;
 
   @IsEmpty()
   @Exclude()
-    karma: number;
+  karma: number;
 
   @IsEmpty()
   @Exclude()
-    global_bantime: Date;
+  global_bantime: Date;
+
+  @IsEmpty()
+  @Exclude()
+  validation: boolean;
 }

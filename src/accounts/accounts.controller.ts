@@ -80,9 +80,10 @@ export class AccountsController {
     @Res() response: Response,
     @Request() request: IAccountInfoFromRequest,
   ): Promise<Response> {
+    console.log(request);
     return response
       .status(HttpStatus.OK)
-      .json(await this.accountsService.getAccountById(request.account.uuid));
+      .json(await this.accountsService.getAccountById(request.user.userId));
   }
 
   /**
@@ -145,7 +146,7 @@ export class AccountsController {
     @Body(ValidationPipe) account: UpdateAccountDto,
   ): Promise<Response> {
     const updatedAccount: Account = await this.accountsService.updateAccount(
-      request.account.uuid,
+      request.user.userId,
       account,
     );
     return response.status(HttpStatus.OK).json({
@@ -185,7 +186,7 @@ export class AccountsController {
     @Res() response: Response,
     @Request() request: IAccountInfoFromRequest,
   ): Promise<Response> {
-    await this.accountsService.deleteAccount(request.account.uuid);
+    await this.accountsService.deleteAccount(request.user.userId);
     return response.status(HttpStatus.OK).json({
       message: 'Utilisateur supprimé avec succès.',
     });

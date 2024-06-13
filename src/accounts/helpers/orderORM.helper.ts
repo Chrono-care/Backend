@@ -12,10 +12,10 @@ import {
 import { Filtering, FilterRule } from '../decorators/filteringParams.decorator';
 import { Sorting } from '../decorators/sortingParams.decorator';
 
-export const getOrder = (sort: Sorting): unknown =>
+export const getOrder = (sort: Sorting): object =>
   sort ? { [sort.property]: sort.direction } : {};
 
-export const getWhere = (filter: Filtering) => {
+export const getWhere = (filter: Filtering): object => {
   if (!filter) return {};
 
   if (filter.rule == FilterRule.IS_NULL) return { [filter.property]: IsNull() };
