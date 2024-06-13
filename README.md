@@ -29,6 +29,8 @@
 
 ### Query Parameters
 
+#### URL Parameters
+
 #### Pagination
 
 - page: Page number (default: 0) (e.g. page=2)
@@ -48,6 +50,8 @@
   - property: Property to filter by
   - value: Value to filter by
   - method: Filtering method (eq, ne, gt, gte, lt, lte, like, nlike, in, nin, isnull, isnotnull)
+
+### Options documentation
 
 #### Available properties
 
@@ -239,6 +243,7 @@
 </details>
 <details>
 <summary>DELETE /accounts/delete/me/ </summary>
+
 ### Response
 
 ```json
@@ -257,6 +262,14 @@
 <details>
 <summary>POST /login </summary>
 
+### Response
+
+```json
+{
+  "token": "eyJhbRBUr1ru-D6VwUDxuDsXE"
+}
+```
+
 ### Query Parameters
 
 #### Body
@@ -265,14 +278,6 @@
 {
   "email": "valid@email.com",
   "password": "password"
-}
-```
-
-### Response
-
-```json
-{
-  "token": "eyJhbRBUr1ru-D6VwUDxuDsXE"
 }
 ```
 
