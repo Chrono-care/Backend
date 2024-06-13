@@ -11,10 +11,13 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     @InjectRepository(Account)
     private accountsRepository: Repository<Account>,
   ) {
-    super({ accountnameField: 'email' });
+    Logger.log('LocalStrategy constructor', 'LocalStrategy');
+    super({ usernameField: 'email' });
   }
 
-  async validate(email: string, password: string): Promise<Account> {
+  async validate(username: string, password: string): Promise<Account> {
+    const email = username.toLowerCase();
+    Logger.log('Validating ' + email, 'LocalStrategy', 'validate');
     const account: Account | null = await this.accountsRepository.findOne({
       where: { email: email },
     });

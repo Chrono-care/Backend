@@ -1,6 +1,6 @@
 export interface IAccountInfoFromRequest extends Request {
-  account: {
-    uuid: string;
+  user: {
+    userId: string;
     email: string;
   };
 }

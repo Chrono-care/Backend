@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateAccountDto } from './create-account.dto';
 import { IsEmpty } from 'class-validator';
@@ -15,4 +16,8 @@ export class UpdateAccountDto extends PartialType(CreateAccountDto) {
   @IsEmpty()
   @Exclude()
   global_bantime: Date;
+
+  @IsEmpty()
+  @Exclude()
+  validation: boolean;
 }
