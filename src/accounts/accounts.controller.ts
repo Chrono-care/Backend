@@ -80,7 +80,6 @@ export class AccountsController {
     @Res() response: Response,
     @Request() request: IAccountInfoFromRequest,
   ): Promise<Response> {
-    console.log(request);
     return response
       .status(HttpStatus.OK)
       .json(await this.accountsService.getAccountById(request.user.userId));
