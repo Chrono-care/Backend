@@ -299,7 +299,7 @@
       "title": "Test 1",
       "description": "Lorem Ipsum Dolor",
       "img_url": "https://test.test.ts/blabla.png",
-      "creation_date": "1730209103740",
+      "creation_date": "2024-10-29T15:12:05.260Z",
       "is_archived": false
     }
   ],
@@ -373,7 +373,7 @@
   "img_url": "https://test.test.ts/blabla.png",
   "is_archived": false,
   "id": 13,
-  "creation_date": "1730213698418"
+  "creation_date": "2024-10-29T15:12:05.260Z"
 }
 ```
 
@@ -401,7 +401,7 @@
   "img_url": "https://test.test.ts/blabla.png",
   "is_archived": false,
   "id": 13,
-  "creation_date": "1730213698418"
+  "creation_date": "2024-10-29T15:12:05.260Z"
 }
 ```
 
@@ -432,7 +432,7 @@
   "title": "Test 1",
   "description": "Lorem Ipsum Dolor",
   "img_url": "https://test.test.ts/blabla.png",
-  "creation_date": "1730209103740",
+  "creation_date": "2024-10-29T15:12:05.260Z",
   "is_archived": true
 }
 ```
