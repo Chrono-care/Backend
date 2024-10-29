@@ -8,11 +8,11 @@ import { Account } from './entities/account.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
-import { Pagination } from './decorators/paginationParams.decorator';
-import { Sorting } from './decorators/sortingParams.decorator';
-import { Filtering } from './decorators/filteringParams.decorator';
-import { PaginatedResource } from './dto/paginated-resource.dto';
-import { getOrder, getWhere } from './helpers/orderORM.helper';
+import { Pagination } from '../common/decorators/paginationParams.decorator';
+import { Sorting } from '../common/decorators/sortingParams.decorator';
+import { Filtering } from '../common/decorators/filteringParams.decorator';
+import { PaginatedResource } from '../common/dto/paginated-resource.dto';
+import { getOrder, getWhere } from '../common/helpers/orderORM.helper';
 
 @Injectable()
 export class AccountsService {

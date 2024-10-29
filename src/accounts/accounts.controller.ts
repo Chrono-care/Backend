@@ -21,12 +21,15 @@ import { IAccountInfoFromRequest } from 'src/security/interfaces/accountInfoFrom
 import {
   Pagination,
   PaginationParams,
-} from './decorators/paginationParams.decorator';
-import { Sorting, SortingParams } from './decorators/sortingParams.decorator';
+} from '../common/decorators/paginationParams.decorator';
+import {
+  Sorting,
+  SortingParams,
+} from '../common/decorators/sortingParams.decorator';
 import {
   Filtering,
   FilteringParams,
-} from './decorators/filteringParams.decorator';
+} from '../common/decorators/filteringParams.decorator';
 import { AccountsService } from './accounts.service';
 
 const authorizedFields = [
