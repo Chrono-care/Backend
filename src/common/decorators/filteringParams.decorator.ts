@@ -35,7 +35,7 @@ export const FilteringParams = createParamDecorator(
 
     // check if the valid params sent is an array
     if (typeof data != 'object')
-      throw new BadRequestException('Invalid filter parameter');
+      throw new BadRequestException('Paramètre "filter" invalide');
 
     // validate the format of the filter, if the rule is 'isnull' or 'isnotnull' it don't need to have a value
     if (
@@ -44,7 +44,7 @@ export const FilteringParams = createParamDecorator(
       ) &&
       !filter.match(/^[\w]+:(isnull|isnotnull)$/)
     ) {
-      throw new BadRequestException('Invalid filter parameter');
+      throw new BadRequestException('Paramètre "filter" invalide');
     }
 
     // extract the parameters and validate if the rule and the property are valid
