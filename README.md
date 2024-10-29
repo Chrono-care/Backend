@@ -1,6 +1,6 @@
-# Account
+# API Routes Documentation
 
-## API Routes Documentation
+## Account
 
 <details>
 <summary>GET /accounts</summary>
@@ -280,5 +280,167 @@
   "password": "password"
 }
 ```
+
+</details>
+
+## Forum
+
+<details>
+<summary>GET /forum</summary>
+
+### Response
+
+```json
+{
+  "totalItems": 1,
+  "items": [
+    {
+      "id": 1,
+      "title": "Test 1",
+      "description": "Lorem Ipsum Dolor",
+      "img_url": "https://test.test.ts/blabla.png",
+      "creation_date": "1730209103740",
+      "is_archived": false
+    }
+  ],
+  "page": 0,
+  "size": 15
+}
+```
+
+### Query Parameters
+
+#### URL Parameters
+
+#### Pagination
+
+- page: Page number (default: 0) (e.g. page=2)
+- size: Number of items per page (default: 15) (e.g. size=20)
+
+#### Sorting
+
+- sort: Setting for sorting the results. Format = property:direction (e.g. sort=email:asc)
+
+  - property: Property to sort by
+  - direction: Sorting direction (asc or desc)
+
+#### Filtering
+
+- filter: Setting for filtering the results. Format = property:method:value (e.g. filter=email:eq:test@test.com)
+
+  - property: Property to filter by
+  - value: Value to filter by
+  - method: Filtering method (eq, ne, gt, gte, lt, lte, like, nlike, in, nin, isnull, isnotnull)
+
+### Options documentation
+
+#### Available properties
+
+- id: number
+- title: string
+- description: string
+- is_archived: boolean
+
+#### Available filtering methods
+
+- eq: Equals
+- neq: Not equals
+- gt: Greater than
+- gte: Greater than or equals
+- lt: Less than
+- lte: Less than or equals
+- like: Like
+- nlike: Not like
+- in: In
+- nin: Not in
+- isnull: Is null
+- isnotnull: Is not null
+
+#### Available sorting methods
+
+- asc: Ascending
+- desc: Descending
+</details>
+<details>
+<summary>POST /forum/create</summary>
+
+### Response
+
+```json
+{
+  "title": "Test 1",
+  "description": "Lorem Ipsum Dolor",
+  "img_url": "https://test.test.ts/blabla.png",
+  "is_archived": false,
+  "id": 13,
+  "creation_date": "1730213698418"
+}
+```
+
+### Query parameters
+
+#### Body
+
+```json
+{
+  "title": "Test 1",
+  "description": "Lorem Ipsum Dolor",
+  "img_url": "https://test.test.ts/blabla.png"
+}
+```
+
+</details>
+<details>
+<summary>PATCH /forum/update/:id</summary>
+### Response
+
+```json
+{
+  "title": "Test 1",
+  "description": "Lorem Ipsum Dolor",
+  "img_url": "https://test.test.ts/blabla.png",
+  "is_archived": false,
+  "id": 13,
+  "creation_date": "1730213698418"
+}
+```
+
+### Query parameters
+
+#### Body
+
+**All properties are optional, you may only specify what you'd like to change.**
+
+```json
+{
+  "title": "Test 1",
+  "description": "Lorem Ipsum Dolor",
+  "img_url": "https://test.test.ts/blabla.png",
+  "is_archived": false
+}
+```
+
+</details>
+<details>
+<summary>PATCH /forum/archive/:id</summary>
+
+### Response
+
+```json
+{
+  "id": 1,
+  "title": "Test 1",
+  "description": "Lorem Ipsum Dolor",
+  "img_url": "https://test.test.ts/blabla.png",
+  "creation_date": "1730209103740",
+  "is_archived": true
+}
+```
+
+### Query Parameters
+
+#### URL Parameters
+
+- set (optional, true by default): boolean used to specify a value to is_archived.
 
 </details>
