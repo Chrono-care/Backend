@@ -10,7 +10,7 @@ import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { Pagination } from '../common/decorators/paginationParams.decorator';
 import { Sorting } from '../common/decorators/sortingParams.decorator';
-import { Filtering } from '../common/decorators/filteringParams.decorator';
+import { IFiltering } from '../common/decorators/filteringParams.decorator';
 import { PaginatedResource } from '../common/dto/paginated-resource.dto';
 import { getOrder, getWhere } from '../common/helpers/orderORM.helper';
 
@@ -40,17 +40,17 @@ export class AccountsService {
   }
 
   /**
-   * Get all accounts with pagination, sorting, and filtering options.
+   * Get all accounts with pagination, sorting, and IFiltering options.
    * @param pagination - The pagination options.
    * @param sort - The sorting options.
-   * @param filter - The filtering options.
+   * @param filter - The IFiltering options.
    * @returns The paginated resource containing the accounts.
    * @throws NotFoundException if no accounts are found.
    */
   async getAllAccounts(
     { page, limit, size, offset }: Pagination,
     sort?: Sorting,
-    filter?: Filtering,
+    filter?: IFiltering[],
   ): Promise<PaginatedResource<Partial<Account>>> {
     const where = getWhere(filter);
     const order = getOrder(sort);

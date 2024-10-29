@@ -5,13 +5,12 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 
-export interface Filtering {
+export interface IFiltering {
   property: string;
   rule: string;
   value: string;
 }
 
-// valid filter rules
 export enum FilterRule {
   EQUALS = 'eq',
   NOT_EQUALS = 'neq',
@@ -27,33 +26,72 @@ export enum FilterRule {
   IS_NOT_NULL = 'isnotnull',
 }
 
+const validateFilterConditions = (filterConditions: string[]): void => {
+  if (filterConditions.length % 3 !== 0 && filterConditions.length % 2 !== 0) {
+    throw new BadRequestException('Invalid filter format');
+  }
+};
+
+const validateProperty = (property: string, data: string[]): void => {
+  if (!data.includes(property)) {
+    throw new BadRequestException(`Invalid filter property: ${property}`);
+  }
+};
+
+const validateRule = (rule: string): void => {
+  if (!Object.values(FilterRule).includes(rule as FilterRule)) {
+    throw new BadRequestException(`Invalid filter rule: ${rule}`);
+  }
+};
+
+const processFilterCondition = (
+  property: string,
+  rule: string,
+  value: string,
+  data: string[],
+): IFiltering => {
+  validateProperty(property, data);
+  validateRule(rule);
+
+  if (rule === FilterRule.IS_NULL || rule === FilterRule.IS_NOT_NULL) {
+    return { property, rule, value: null };
+  }
+
+  if (!value) {
+    throw new BadRequestException(`Missing value for property: ${property}`);
+  }
+
+  return { property, rule, value };
+};
+
 export const FilteringParams = createParamDecorator(
-  (data, ctx: ExecutionContext): Filtering => {
+  (data: string[], ctx: ExecutionContext): IFiltering[] => {
     const req: Request = ctx.switchToHttp().getRequest();
     const filter = req.query.filter as string;
-    if (!filter) return null;
+    if (!filter) return [];
 
-    // check if the valid params sent is an array
-    if (typeof data != 'object')
-      throw new BadRequestException('Paramètre "filter" invalide');
-
-    // validate the format of the filter, if the rule is 'isnull' or 'isnotnull' it don't need to have a value
-    if (
-      !filter.match(
-        /^[\w]+:(eq|neq|gt|gte|lt|lte|like|nlike|in|nin):[\w$&+,=?@#|'<>.-^*()%!]+$/,
-      ) &&
-      !filter.match(/^[\w]+:(isnull|isnotnull)$/)
-    ) {
-      throw new BadRequestException('Paramètre "filter" invalide');
+    if (typeof data !== 'object' || !Array.isArray(data)) {
+      throw new BadRequestException('Invalid data parameter');
     }
 
-    // extract the parameters and validate if the rule and the property are valid
-    const [property, rule, value] = filter.split(':');
-    if (!data.includes(property))
-      throw new BadRequestException(`Invalid filter property: ${property}`);
-    if (!Object.values(FilterRule).includes(rule as FilterRule))
-      throw new BadRequestException(`Invalid filter rule: ${rule}`);
+    const filterConditions = filter.split(':');
+    validateFilterConditions(filterConditions);
 
-    return { property, rule, value };
+    const result: IFiltering[] = [];
+
+    for (let i = 0; i < filterConditions.length; i += 3) {
+      const property = filterConditions[i];
+      const rule = filterConditions[i + 1];
+      const value = filterConditions[i + 2];
+
+      const filteringItem = processFilterCondition(property, rule, value, data);
+      result.push(filteringItem);
+
+      if (rule === FilterRule.IS_NULL || rule === FilterRule.IS_NOT_NULL) {
+        i--; // Adjust index since we don't have a value for these rules
+      }
+    }
+
+    return result;
   },
 );

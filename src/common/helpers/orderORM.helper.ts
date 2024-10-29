@@ -9,36 +9,74 @@ import {
   In,
 } from 'typeorm';
 
-import { Filtering, FilterRule } from '../decorators/filteringParams.decorator';
+import {
+  IFiltering,
+  FilterRule,
+} from '../decorators/filteringParams.decorator';
 import { Sorting } from '../decorators/sortingParams.decorator';
 
 export const getOrder = (sort: Sorting): object =>
   sort ? { [sort.property]: sort.direction } : {};
 
-export const getWhere = (filter: Filtering): object => {
-  if (!filter) return {};
+export const getWhere = (filters: IFiltering[]): object => {
+  if (!filters || filters.length === 0) return {};
 
-  if (filter.rule == FilterRule.IS_NULL) return { [filter.property]: IsNull() };
-  if (filter.rule == FilterRule.IS_NOT_NULL)
-    return { [filter.property]: Not(IsNull()) };
-  if (filter.rule == FilterRule.EQUALS)
-    return { [filter.property]: filter.value };
-  if (filter.rule == FilterRule.NOT_EQUALS)
-    return { [filter.property]: Not(filter.value) };
-  if (filter.rule == FilterRule.GREATER_THAN)
-    return { [filter.property]: MoreThan(filter.value) };
-  if (filter.rule == FilterRule.GREATER_THAN_OR_EQUALS)
-    return { [filter.property]: MoreThanOrEqual(filter.value) };
-  if (filter.rule == FilterRule.LESS_THAN)
-    return { [filter.property]: LessThan(filter.value) };
-  if (filter.rule == FilterRule.LESS_THAN_OR_EQUALS)
-    return { [filter.property]: LessThanOrEqual(filter.value) };
-  if (filter.rule == FilterRule.LIKE)
-    return { [filter.property]: ILike(`%${filter.value}%`) };
-  if (filter.rule == FilterRule.NOT_LIKE)
-    return { [filter.property]: Not(ILike(`%${filter.value}%`)) };
-  if (filter.rule == FilterRule.IN)
-    return { [filter.property]: In(filter.value.split(',')) };
-  if (filter.rule == FilterRule.NOT_IN)
-    return { [filter.property]: Not(In(filter.value.split(','))) };
+  const whereClause = {};
+
+  filters.forEach((filter) => {
+    let condition;
+
+    switch (filter.rule) {
+      case FilterRule.IS_NULL:
+        condition = IsNull();
+        break;
+      case FilterRule.IS_NOT_NULL:
+        condition = Not(IsNull());
+        break;
+      case FilterRule.EQUALS:
+        condition = filter.value;
+        break;
+      case FilterRule.NOT_EQUALS:
+        condition = Not(filter.value);
+        break;
+      case FilterRule.GREATER_THAN:
+        condition = MoreThan(filter.value);
+        break;
+      case FilterRule.GREATER_THAN_OR_EQUALS:
+        condition = MoreThanOrEqual(filter.value);
+        break;
+      case FilterRule.LESS_THAN:
+        condition = LessThan(filter.value);
+        break;
+      case FilterRule.LESS_THAN_OR_EQUALS:
+        condition = LessThanOrEqual(filter.value);
+        break;
+      case FilterRule.LIKE:
+        condition = ILike(`%${filter.value}%`);
+        break;
+      case FilterRule.NOT_LIKE:
+        condition = Not(ILike(`%${filter.value}%`));
+        break;
+      case FilterRule.IN:
+        condition = In(filter.value.split(','));
+        break;
+      case FilterRule.NOT_IN:
+        condition = Not(In(filter.value.split(',')));
+        break;
+      default:
+        // Skip unknown filter rules
+        return;
+    }
+
+    // If the property already exists in the where clause, we need to handle it as an AND condition
+    if (whereClause.hasOwnProperty(filter.property)) {
+      whereClause[filter.property] = Array.isArray(whereClause[filter.property])
+        ? [...whereClause[filter.property], condition]
+        : [whereClause[filter.property], condition];
+    } else {
+      whereClause[filter.property] = condition;
+    }
+  });
+
+  return whereClause;
 };
