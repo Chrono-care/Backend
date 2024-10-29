@@ -14,11 +14,11 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import {
-  Pagination,
+  IPagination,
   PaginationParams,
 } from 'src/common/decorators/paginationParams.decorator';
 import {
-  Sorting,
+  ISorting,
   SortingParams,
 } from 'src/common/decorators/sortingParams.decorator';
 import {
@@ -39,8 +39,8 @@ export class forumsController {
   @Get()
   async getAll(
     @Res() response: Response,
-    @PaginationParams({}) pagination: Pagination,
-    @SortingParams(authorizedFields) sort?: Sorting,
+    @PaginationParams({}) pagination: IPagination,
+    @SortingParams(authorizedFields) sort?: ISorting,
     @FilteringParams(authorizedFields) filter?: IFiltering[],
   ): Promise<Response> {
     return response

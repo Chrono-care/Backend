@@ -5,8 +5,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Pagination } from 'src/common/decorators/paginationParams.decorator';
-import { Sorting } from 'src/common/decorators/sortingParams.decorator';
+import { IPagination } from 'src/common/decorators/paginationParams.decorator';
+import { ISorting } from 'src/common/decorators/sortingParams.decorator';
 import { IFiltering } from 'src/common/decorators/filteringParams.decorator';
 import { PaginatedResource } from 'src/common/dto/paginated-resource.dto';
 import { Forum } from './entities/forum.entity';
@@ -22,8 +22,8 @@ export class ForumsService {
   ) {}
 
   async getAllForums(
-    { page, limit, size, offset }: Pagination,
-    sort?: Sorting,
+    { page, limit, size, offset }: IPagination,
+    sort?: ISorting,
     filter?: IFiltering[],
   ): Promise<PaginatedResource<Partial<Forum>>> {
     const where = getWhere(filter);
