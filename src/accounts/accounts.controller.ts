@@ -19,11 +19,11 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 import { JwtAuthGuard } from 'src/security/strategies/guards/jwt-auth.guard';
 import { IAccountInfoFromRequest } from 'src/security/interfaces/accountInfoFromRequest.interface';
 import {
-  Pagination,
+  IPagination,
   PaginationParams,
 } from '../common/decorators/paginationParams.decorator';
 import {
-  Sorting,
+  ISorting,
   SortingParams,
 } from '../common/decorators/sortingParams.decorator';
 import {
@@ -52,15 +52,15 @@ export class AccountsController {
    *
    * @param response - The HTTP response object.
    * @param pagination - The pagination parameters.
-   * @param sort - The sorting parameters.
+   * @param sort - The ISorting parameters.
    * @param filter - The IFiltering parameters.
    * @returns A Promise that resolves to the HTTP response.
    */
   @Get()
   async getAll(
     @Res() response: Response,
-    @PaginationParams({}) pagination: Pagination,
-    @SortingParams(authorizedFields) sort?: Sorting,
+    @PaginationParams({}) pagination: IPagination,
+    @SortingParams(authorizedFields) sort?: ISorting,
     @FilteringParams(authorizedFields) filter?: IFiltering[],
   ): Promise<Response> {
     return response

@@ -13,9 +13,9 @@ import {
   IFiltering,
   FilterRule,
 } from '../decorators/filteringParams.decorator';
-import { Sorting } from '../decorators/sortingParams.decorator';
+import { ISorting } from '../decorators/sortingParams.decorator';
 
-export const getOrder = (sort: Sorting): object =>
+export const getOrder = (sort: ISorting): object =>
   sort ? { [sort.property]: sort.direction } : {};
 
 export const getWhere = (filters: IFiltering[]): object => {

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 
-export interface Pagination {
+export interface IPagination {
   page: number;
   limit: number;
   size: number;
@@ -13,7 +13,7 @@ export interface Pagination {
 }
 
 export const PaginationParams = createParamDecorator(
-  (_, ctx: ExecutionContext): Pagination => {
+  (_, ctx: ExecutionContext): IPagination => {
     const req: Request = ctx.switchToHttp().getRequest();
     let page = parseInt(req.query.page as string);
     let size = parseInt(req.query.size as string);
