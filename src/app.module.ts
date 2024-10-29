@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as fsStore from 'cache-manager-fs-hash';
 import { AccountsModule } from './accounts/accounts.module';
 import { SecurityModule } from './security/security.module';
+import { forumsModule } from './forums/forums.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { SecurityModule } from './security/security.module';
     }),
     AccountsModule,
     SecurityModule,
+    forumsModule,
   ],
   controllers: [],
   providers: [],
