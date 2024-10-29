@@ -16,7 +16,6 @@ export class CreateForumDto {
   @IsString()
   img_url: string;
 
-  @IsNotEmpty()
   @IsBoolean()
-  is_archived: boolean;
+  is_archived: boolean = false;
 }
