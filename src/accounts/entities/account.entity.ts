@@ -5,9 +5,11 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Timestamp,
+  OneToMany,
 } from 'typeorm';
 import * as argon2 from 'argon2';
 import { Exclude, instanceToPlain } from 'class-transformer';
+import { Thread } from 'src/thread/entities/thread.entity';
 
 @Entity()
 export class Account {
@@ -38,6 +40,9 @@ export class Account {
 
   @Column({ default: false })
   validated: boolean;
+
+  @OneToMany(() => Thread, (thread) => thread.author)
+  threads: Thread[]; // This property represents the user's threads
 
   @BeforeInsert()
   @BeforeUpdate()
