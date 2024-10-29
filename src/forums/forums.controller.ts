@@ -30,7 +30,7 @@ import { CreateForumDto } from './dto/create-forum.dto';
 import { UpdateForumDto } from './dto/update-forum.dto';
 import { ForumsService } from './forums.service';
 
-const authorizedFields = ['id', 'title', 'description'];
+const authorizedFields = ['id', 'title', 'description', 'is_archived'];
 
 @Controller('forums')
 export class forumsController {
