@@ -27,7 +27,7 @@ import {
   SortingParams,
 } from '../common/decorators/sortingParams.decorator';
 import {
-  Filtering,
+  IFiltering,
   FilteringParams,
 } from '../common/decorators/filteringParams.decorator';
 import { AccountsService } from './accounts.service';
@@ -53,7 +53,7 @@ export class AccountsController {
    * @param response - The HTTP response object.
    * @param pagination - The pagination parameters.
    * @param sort - The sorting parameters.
-   * @param filter - The filtering parameters.
+   * @param filter - The IFiltering parameters.
    * @returns A Promise that resolves to the HTTP response.
    */
   @Get()
@@ -61,7 +61,7 @@ export class AccountsController {
     @Res() response: Response,
     @PaginationParams({}) pagination: Pagination,
     @SortingParams(authorizedFields) sort?: Sorting,
-    @FilteringParams(authorizedFields) filter?: Filtering,
+    @FilteringParams(authorizedFields) filter?: IFiltering[],
   ): Promise<Response> {
     return response
       .status(HttpStatus.OK)

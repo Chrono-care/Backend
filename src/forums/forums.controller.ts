@@ -22,7 +22,7 @@ import {
   SortingParams,
 } from 'src/common/decorators/sortingParams.decorator';
 import {
-  Filtering,
+  IFiltering,
   FilteringParams,
 } from 'src/common/decorators/filteringParams.decorator';
 import { Response } from 'express';
@@ -41,7 +41,7 @@ export class forumsController {
     @Res() response: Response,
     @PaginationParams({}) pagination: Pagination,
     @SortingParams(authorizedFields) sort?: Sorting,
-    @FilteringParams(authorizedFields) filter?: Filtering,
+    @FilteringParams(authorizedFields) filter?: IFiltering[],
   ): Promise<Response> {
     return response
       .status(HttpStatus.OK)
