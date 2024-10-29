@@ -1,9 +1,12 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Get,
   HttpStatus,
   Param,
+  ParseBoolPipe,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -58,7 +61,7 @@ export class forumsController {
   @Patch('/update/:id')
   async update(
     @Res() response: Response,
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body(new ValidationPipe()) updatedForum: UpdateForumDto,
   ): Promise<Response> {
     return response
@@ -69,8 +72,8 @@ export class forumsController {
   @Patch('/archive/:id')
   async archive(
     @Res() response: Response,
-    @Param('id') id: number,
-    @Query('set') set: boolean,
+    @Param('id', ParseIntPipe) id: number,
+    @Query('set', new DefaultValuePipe(true), ParseBoolPipe) set: boolean,
   ): Promise<Response> {
     return response
       .status(HttpStatus.OK)

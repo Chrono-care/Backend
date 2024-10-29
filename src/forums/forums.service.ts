@@ -63,7 +63,7 @@ export class ForumsService {
     return await this.forumsRepository.save({ ...forum, ...updateForum });
   }
 
-  async archiveForum(id: number, set: boolean = true): Promise<Forum> {
+  async archiveForum(id: number, set: boolean): Promise<Forum> {
     const forum = await this.forumsRepository.findOneBy({ id });
     if (!forum) {
       throw new NotFoundException(`Le forum ${id} n'existe pas.`);
