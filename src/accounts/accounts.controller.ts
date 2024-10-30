@@ -52,8 +52,8 @@ export class AccountsController {
    *
    * @param response - The HTTP response object.
    * @param pagination - The pagination parameters.
-   * @param sort - The ISorting parameters.
-   * @param filter - The IFiltering parameters.
+   * @param sort - The sorting parameters.
+   * @param filter - The filtering parameters.
    * @returns A Promise that resolves to the HTTP response.
    */
   @Get()
