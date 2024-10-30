@@ -5,12 +5,12 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { IPagination } from 'src/common/decorators/paginationParams.decorator';
-import { ISorting } from 'src/common/decorators/sortingParams.decorator';
-import { IFiltering } from 'src/common/decorators/filteringParams.decorator';
-import { PaginatedResource } from 'src/common/dto/paginated-resource.dto';
+import { IPagination } from '../common/decorators/paginationParams.decorator';
+import { ISorting } from '../common/decorators/sortingParams.decorator';
+import { IFiltering } from '../common/decorators/filteringParams.decorator';
+import { PaginatedResource } from '../common/dto/paginated-resource.dto';
 import { Forum } from './entities/forum.entity';
-import { getOrder, getWhere } from 'src/common/helpers/orderORM.helper';
+import { getOrder, getWhere } from '../common/helpers/orderORM.helper';
 import { CreateForumDto } from './dto/create-forum.dto';
 import { UpdateForumDto } from './dto/update-forum.dto';
 
