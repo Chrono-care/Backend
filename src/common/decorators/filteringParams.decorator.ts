@@ -28,19 +28,19 @@ export enum FilterRule {
 
 const validateFilterConditions = (filterConditions: string[]): void => {
   if (filterConditions.length % 3 !== 0 && filterConditions.length % 2 !== 0) {
-    throw new BadRequestException('Invalid filter format');
+    throw new BadRequestException('Format de filtre invalide');
   }
 };
 
 const validateProperty = (property: string, data: string[]): void => {
   if (!data.includes(property)) {
-    throw new BadRequestException(`Invalid filter property: ${property}`);
+    throw new BadRequestException(`Propriété de filtre invalide: ${property}`);
   }
 };
 
 const validateRule = (rule: string): void => {
   if (!Object.values(FilterRule).includes(rule as FilterRule)) {
-    throw new BadRequestException(`Invalid filter rule: ${rule}`);
+    throw new BadRequestException(`Règle de filtre invalide: ${rule}`);
   }
 };
 
@@ -58,7 +58,9 @@ const processFilterCondition = (
   }
 
   if (!value) {
-    throw new BadRequestException(`Missing value for property: ${property}`);
+    throw new BadRequestException(
+      `Valeur absente pour la propriété : ${property}`,
+    );
   }
 
   return { property, rule, value };
@@ -71,7 +73,7 @@ export const FilteringParams = createParamDecorator(
     if (!filter) return [];
 
     if (typeof data !== 'object' || !Array.isArray(data)) {
-      throw new BadRequestException('Invalid data parameter');
+      throw new BadRequestException('Paramètre data invalide');
     }
 
     const filterConditions = filter.split(':');
