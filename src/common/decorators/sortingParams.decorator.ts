@@ -10,7 +10,7 @@ export interface ISorting {
   direction: string;
 }
 
-export const ISortingParams = createParamDecorator(
+export const SortingParams = createParamDecorator(
   (validParams, ctx: ExecutionContext): ISorting => {
     const req: Request = ctx.switchToHttp().getRequest();
     const sort = req.query.sort as string;
