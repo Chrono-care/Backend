@@ -40,10 +40,10 @@ export class AccountsService {
   }
 
   /**
-   * Get all accounts with pagination, ISorting, and IFiltering options.
+   * Get all accounts with pagination, sorting, and filtering options.
    * @param pagination - The pagination options.
-   * @param sort - The ISorting options.
-   * @param filter - The IFiltering options.
+   * @param sort - The sorting options.
+   * @param filter - The filtering options.
    * @returns The paginated resource containing the accounts.
    * @throws NotFoundException if no accounts are found.
    */
