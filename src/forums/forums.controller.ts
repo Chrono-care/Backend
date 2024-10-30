@@ -16,15 +16,15 @@ import {
 import {
   IPagination,
   PaginationParams,
-} from 'src/common/decorators/paginationParams.decorator';
+} from '../common/decorators/paginationParams.decorator';
 import {
   ISorting,
   SortingParams,
-} from 'src/common/decorators/sortingParams.decorator';
+} from '../common/decorators/sortingParams.decorator';
 import {
   IFiltering,
   FilteringParams,
-} from 'src/common/decorators/filteringParams.decorator';
+} from '../common/decorators/filteringParams.decorator';
 import { Response } from 'express';
 import { CreateForumDto } from './dto/create-forum.dto';
 import { UpdateForumDto } from './dto/update-forum.dto';

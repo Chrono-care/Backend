@@ -16,8 +16,8 @@ import { Account } from './entities/account.entity';
 import { Response } from 'express';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
-import { JwtAuthGuard } from 'src/security/strategies/guards/jwt-auth.guard';
-import { IAccountInfoFromRequest } from 'src/security/interfaces/accountInfoFromRequest.interface';
+import { JwtAuthGuard } from '../security/strategies/guards/jwt-auth.guard';
+import { IAccountInfoFromRequest } from '../security/interfaces/accountInfoFromRequest.interface';
 import {
   IPagination,
   PaginationParams,
