@@ -5,13 +5,13 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 
-export interface Sorting {
+export interface ISorting {
   property: string;
   direction: string;
 }
 
-export const SortingParams = createParamDecorator(
-  (validParams, ctx: ExecutionContext): Sorting => {
+export const ISortingParams = createParamDecorator(
+  (validParams, ctx: ExecutionContext): ISorting => {
     const req: Request = ctx.switchToHttp().getRequest();
     const sort = req.query.sort as string;
     if (!sort) return null;
