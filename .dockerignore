@@ -1,0 +1,16 @@
+Dockerfile
+docker-compose*.yml
+Makefile
+dist/
+node_modules/
+.env
+.git
+.github
+.gitignore
+.idea
+.docker
+*.log
+**/*.test.ts
+**/*.spec.ts
+src/**/*.spec.ts
+src/**/*.test.ts
