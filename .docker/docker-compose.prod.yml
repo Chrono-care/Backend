@@ -1,0 +1,7 @@
+services:
+  back:
+    build:
+      context: ..
+      dockerfile: ./.docker/Dockerfile
+      target: prod
+    container_name: back-app-prod
