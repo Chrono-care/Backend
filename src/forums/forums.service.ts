@@ -70,4 +70,13 @@ export class ForumsService {
     }
     return await this.forumsRepository.save({ ...forum, is_archived: set });
   }
+
+  async deleteForum(id: number): Promise<Forum> {
+    const forum = await this.forumsRepository.findOneBy({ id });
+    if (!forum) {
+      throw new NotFoundException(`Le forum ${id} n'existe pas.`);
+    }
+    await this.forumsRepository.delete({ id });
+    return forum;
+  }
 }
