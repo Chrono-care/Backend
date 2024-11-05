@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   DefaultValuePipe,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -32,7 +33,7 @@ import { ForumsService } from './forums.service';
 
 const authorizedFields = ['id', 'title', 'description', 'is_archived'];
 
-@Controller('forums')
+@Controller('forum')
 export class forumsController {
   constructor(private readonly forumsService: ForumsService) {}
 
@@ -78,5 +79,15 @@ export class forumsController {
     return response
       .status(HttpStatus.OK)
       .json(await this.forumsService.archiveForum(id, set));
+  }
+
+  @Delete('/delete/:id')
+  async delete(
+    @Res() response: Response,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.OK)
+      .json(await this.forumsService.deleteForum(id));
   }
 }
