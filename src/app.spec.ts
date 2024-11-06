@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './app.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 describe('End-to-end Testing', () => {
   let app: INestApplication;
@@ -11,15 +12,24 @@ describe('End-to-end Testing', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         AppModule,
-        TypeOrmModule.forRoot({
-          type: 'postgres',
-          host: 'localhost',
-          port: 5432,
-          username: 'test',
-          password: 'test',
-          database: 'test',
-          entities: ['dist/**/*.entity{.ts}'],
-          synchronize: true,
+        ConfigModule.forRoot({
+          isGlobal: true,
+          // You can specify a custom .env file for testing if needed
+          // envFilePath: '.env.test',
+        }),
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          useFactory: (configService: ConfigService) => ({
+            type: 'postgres',
+            host: configService.get('TEST_POSTGRES_DB_HOST'),
+            port: configService.get('TEST_POSTGRES_DB_PORT'),
+            username: configService.get('TEST_POSTGRES_DB_USER'),
+            password: configService.get('TEST_POSTGRES_DB_PASS'),
+            database: configService.get('TEST_POSTGRES_DB_NAME'),
+            entities: ['dist/**/*.entity{.ts}'],
+            synchronize: true,
+          }),
+          inject: [ConfigService],
         }),
       ],
     }).compile();
