@@ -8,7 +8,6 @@ node_modules/
 .github
 .gitignore
 .idea
-.docker
 *.log
 **/*.test.ts
 **/*.spec.ts

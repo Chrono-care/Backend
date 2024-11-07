@@ -9,7 +9,7 @@ services:
     networks:
       - devops-network
     env_file:
-      - ../../DevOps/.env
+      - ../../DevOps/.env.dev
     environment:
       - NODE_ENV=development
 
