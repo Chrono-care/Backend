@@ -5,3 +5,11 @@ services:
       dockerfile: ./.docker/Dockerfile
       target: prod
     container_name: back-app-prod
+    networks:
+      - devops-network
+    env_file:
+      - ../../DevOps/.env.prod 
+
+networks:
+  devops-network:
+    external: true
