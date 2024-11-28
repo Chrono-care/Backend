@@ -16,17 +16,20 @@ import { Account } from './entities/account.entity';
 import { Response } from 'express';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
-import { JwtAuthGuard } from 'src/security/strategies/guards/jwt-auth.guard';
-import { IAccountInfoFromRequest } from 'src/security/interfaces/accountInfoFromRequest.interface';
+import { JwtAuthGuard } from '../security/strategies/guards/jwt-auth.guard';
+import { IAccountInfoFromRequest } from '../security/interfaces/accountInfoFromRequest.interface';
 import {
-  Pagination,
+  IPagination,
   PaginationParams,
-} from './decorators/paginationParams.decorator';
-import { Sorting, SortingParams } from './decorators/sortingParams.decorator';
+} from '../common/decorators/paginationParams.decorator';
 import {
-  Filtering,
+  ISorting,
+  SortingParams,
+} from '../common/decorators/sortingParams.decorator';
+import {
+  IFiltering,
   FilteringParams,
-} from './decorators/filteringParams.decorator';
+} from '../common/decorators/filteringParams.decorator';
 import { AccountsService } from './accounts.service';
 
 const authorizedFields = [
@@ -56,9 +59,9 @@ export class AccountsController {
   @Get()
   async getAll(
     @Res() response: Response,
-    @PaginationParams({}) pagination: Pagination,
-    @SortingParams(authorizedFields) sort?: Sorting,
-    @FilteringParams(authorizedFields) filter?: Filtering,
+    @PaginationParams({}) pagination: IPagination,
+    @SortingParams(authorizedFields) sort?: ISorting,
+    @FilteringParams(authorizedFields) filter?: IFiltering[],
   ): Promise<Response> {
     return response
       .status(HttpStatus.OK)

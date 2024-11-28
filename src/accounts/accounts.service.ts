@@ -8,11 +8,11 @@ import { Account } from './entities/account.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
-import { Pagination } from './decorators/paginationParams.decorator';
-import { Sorting } from './decorators/sortingParams.decorator';
-import { Filtering } from './decorators/filteringParams.decorator';
-import { PaginatedResource } from './dto/paginated-resource.dto';
-import { getOrder, getWhere } from './helpers/orderORM.helper';
+import { IPagination } from '../common/decorators/paginationParams.decorator';
+import { ISorting } from '../common/decorators/sortingParams.decorator';
+import { IFiltering } from '../common/decorators/filteringParams.decorator';
+import { PaginatedResource } from '../common/dto/paginated-resource.dto';
+import { getOrder, getWhere } from '../common/helpers/orderORM.helper';
 
 @Injectable()
 export class AccountsService {
@@ -48,9 +48,9 @@ export class AccountsService {
    * @throws NotFoundException if no accounts are found.
    */
   async getAllAccounts(
-    { page, limit, size, offset }: Pagination,
-    sort?: Sorting,
-    filter?: Filtering,
+    { page, limit, size, offset }: IPagination,
+    sort?: ISorting,
+    filter?: IFiltering[],
   ): Promise<PaginatedResource<Partial<Account>>> {
     const where = getWhere(filter);
     const order = getOrder(sort);

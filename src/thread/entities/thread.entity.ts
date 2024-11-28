@@ -7,11 +7,13 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from 'typeorm';
+import { instanceToPlain } from 'class-transformer';
+import { Forum } from 'src/forums/entities/forum.entity';
 
 @Entity()
 export class Thread {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('increment')
+  id: number;
 
   @Column({ type: 'varchar', length: 255 })
   title: string;
@@ -25,6 +27,9 @@ export class Thread {
   @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
   ratio: number;
 
+  @Column({ type: 'boolean', default: false })
+  is_archived: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
@@ -33,4 +38,11 @@ export class Thread {
 
   @ManyToOne(() => Account, (account) => account.threads)
   author: Account;
+
+  @ManyToOne(() => Forum, (forum) => forum.threads)
+  forum: Forum;
+
+  toJSON(): Record<string, unknown> {
+    return instanceToPlain(this);
+  }
 }

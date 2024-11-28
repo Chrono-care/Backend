@@ -1,34 +1,68 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  DefaultValuePipe,
+  Get,
+  HttpStatus,
+  Param,
+  ParseBoolPipe,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+  Res,
+  ValidationPipe,
+} from '@nestjs/common';
+import { Response } from 'express';
 import { ThreadService } from './thread.service';
 import { CreateThreadDto } from './dto/create-thread.dto';
-import { UpdateThreadDto } from './dto/update-thread.dto';
+import {
+  IPagination,
+  PaginationParams,
+} from 'src/common/decorators/paginationParams.decorator';
+import {
+  ISorting,
+  SortingParams,
+} from 'src/common/decorators/sortingParams.decorator';
+import {
+  FilteringParams,
+  IFiltering,
+} from 'src/common/decorators/filteringParams.decorator';
 
+const authorizedFields = ['id', 'title', 'content', 'is_archived'];
 @Controller('thread')
 export class ThreadController {
   constructor(private readonly threadService: ThreadService) {}
-
-  @Post()
-  create(@Body() createThreadDto: CreateThreadDto) {
-    return this.threadService.create(createThreadDto);
-  }
-
   @Get()
-  findAll() {
-    return this.threadService.findAll();
+  async getAllThreads(
+    @Res() response: Response,
+    @PaginationParams({}) pagination: IPagination,
+    @SortingParams(authorizedFields) sort?: ISorting,
+    @FilteringParams(authorizedFields) filter?: IFiltering[],
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.OK)
+      .json(await this.threadService.getAllTreads(pagination, sort, filter));
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.threadService.findOne(+id);
+  @Post('/create')
+  async create(
+    @Res() response: Response,
+    @Body(new ValidationPipe()) newThread: CreateThreadDto,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.CREATED)
+      .json(await this.threadService.createTread(newThread));
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateThreadDto: UpdateThreadDto) {
-    return this.threadService.update(+id, updateThreadDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.threadService.remove(+id);
+  @Patch('/archive/:id')
+  async archive(
+    @Res() response: Response,
+    @Param('id', ParseIntPipe) id: number,
+    @Query('set', new DefaultValuePipe(true), ParseBoolPipe) set: boolean,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.OK)
+      .json(await this.threadService.archiveTread(id, set));
   }
 }

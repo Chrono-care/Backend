@@ -6,6 +6,7 @@ import * as fsStore from 'cache-manager-fs-hash';
 import { AccountsModule } from './accounts/accounts.module';
 import { SecurityModule } from './security/security.module';
 import { ThreadModule } from './thread/thread.module';
+import { forumsModule } from './forums/forums.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ThreadModule } from './thread/thread.module';
     AccountsModule,
     SecurityModule,
     ThreadModule,
+    forumsModule,
   ],
   controllers: [],
   providers: [],
