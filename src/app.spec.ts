@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { AppModule } from './app.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 describe('End-to-end Testing', () => {
   let app: INestApplication;
@@ -11,15 +12,24 @@ describe('End-to-end Testing', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         AppModule,
-        TypeOrmModule.forRoot({
-          type: 'postgres',
-          host: 'localhost',
-          port: 5432,
-          username: 'test',
-          password: 'test',
-          database: 'test',
-          entities: ['dist/**/*.entity{.ts}'],
-          synchronize: true,
+        ConfigModule.forRoot({
+          isGlobal: true,
+          // You can specify a custom .env file for testing if needed
+          // envFilePath: '.env.test',
+        }),
+        TypeOrmModule.forRootAsync({
+          imports: [ConfigModule],
+          useFactory: (configService: ConfigService) => ({
+            type: 'postgres',
+            host: configService.get('TEST_POSTGRES_DB_HOST'),
+            port: configService.get('TEST_POSTGRES_DB_PORT'),
+            username: configService.get('TEST_POSTGRES_DB_USER'),
+            password: configService.get('TEST_POSTGRES_DB_PASS'),
+            database: configService.get('TEST_POSTGRES_DB_NAME'),
+            entities: ['dist/**/*.entity{.ts}'],
+            synchronize: true,
+          }),
+          inject: [ConfigService],
         }),
       ],
     }).compile();
@@ -30,7 +40,7 @@ describe('End-to-end Testing', () => {
   let token: string;
   let uuid: string;
   describe('Accounts', () => {
-    it('should create a new user', async () => {
+    it('should create a new user (/accounts/create)', async () => {
       const res = await request(app.getHttpServer())
         .post('/accounts/create')
         .send({
@@ -45,7 +55,7 @@ describe('End-to-end Testing', () => {
       uuid = res.body.newAccount.uuid;
       return 1;
     });
-    it('should log the user and return a token', async () => {
+    it('should log the user and return a token (/login)', async () => {
       const requestResult = await request(app.getHttpServer())
         .post('/login')
         .send({
@@ -60,7 +70,7 @@ describe('End-to-end Testing', () => {
 
   let forumId: number;
   describe('Forums', () => {
-    it('should create a new forum', async () => {
+    it('should create a new forum (/forum/create)', async () => {
       const res = await request(app.getHttpServer())
         .post('/forum/create')
         .set('Authorization', `Bearer ${token}`)
@@ -75,7 +85,7 @@ describe('End-to-end Testing', () => {
       forumId = res.body.id;
     });
 
-    it('should get all forums', async () => {
+    it('should get all forums (/forum)', async () => {
       const res = await request(app.getHttpServer()).get('/forum').expect(200);
       expect(
         res.body instanceof Object && res.body.items instanceof Array,
@@ -83,13 +93,13 @@ describe('End-to-end Testing', () => {
       expect(res.body.items.length).toBe(res.body.totalItems);
     });
 
-    it('should get the forum by id', async () => {
+    it('should get the forum by id (/forum?filter=id:eq:id)', async () => {
       return await request(app.getHttpServer())
         .get('/forum?filter=id:eq:' + forumId)
         .expect(200);
     });
 
-    it('should update the forum', async () => {
+    it('should update the forum /forum/update/:id)', async () => {
       const res = await request(app.getHttpServer())
         .patch('/forum/update/' + forumId)
         .set('Authorization', `Bearer ${token}`)
@@ -104,20 +114,17 @@ describe('End-to-end Testing', () => {
       expect(res.body.img_url).toBe('https://test2.test.ts/blabla.png');
     });
 
-    it('should archive the forum', async () => {
-      await request(app.getHttpServer())
+    it('should archive the forum (/forum/archive/:id)', async () => {
+      const res = await request(app.getHttpServer())
         .patch('/forum/archive/' + forumId)
         .set('Authorization', `Bearer ${token}`)
         .expect(200);
-      const res = await request(app.getHttpServer())
-        .get('/forum?filter=id:eq:' + forumId)
-        .expect(200);
-      expect(res.body.items[0].is_archived).toBe(true);
+      expect(res.body.is_archived).toBe(true);
     });
   });
 
   describe('Accounts (cleaning)', () => {
-    it('should delete the user', async () => {
+    it('should delete the user /accounts/delete/uuid/:uuid)', async () => {
       return await request(app.getHttpServer())
         .delete('/accounts/delete/uuid/' + uuid)
         .set('Authorization', `Bearer ${token}`)
@@ -126,7 +133,7 @@ describe('End-to-end Testing', () => {
   });
 
   describe('Forums (cleaning)', () => {
-    it('should delete the forum', async () => {
+    it('should delete the forum (/forum/delete/:id', async () => {
       return await request(app.getHttpServer())
         .delete('/forum/delete/' + forumId)
         .set('Authorization', `Bearer ${token}`)
