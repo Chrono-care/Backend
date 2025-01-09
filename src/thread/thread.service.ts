@@ -3,13 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateThreadDto } from './dto/create-thread.dto';
 import { Thread } from './entities/thread.entity';
-import { Account } from 'src/accounts/entities/account.entity';
-import { Forum } from 'src/forums/entities/forum.entity';
-import { PaginatedResource } from 'src/common/dto/paginated-resource.dto';
-import { IPagination } from 'src/common/decorators/paginationParams.decorator';
-import { ISorting } from 'src/common/decorators/sortingParams.decorator';
-import { IFiltering } from 'src/common/decorators/filteringParams.decorator';
-import { getOrder, getWhere } from 'src/common/helpers/orderORM.helper';
+import { Account } from '../accounts/entities/account.entity';
+import { Forum } from '../forums/entities/forum.entity';
+import { PaginatedResource } from '../common/dto/paginated-resource.dto';
+import { IPagination } from '../common/decorators/paginationParams.decorator';
+import { ISorting } from '../common/decorators/sortingParams.decorator';
+import { IFiltering } from '../common/decorators/filteringParams.decorator';
+import { getOrder, getWhere } from '../common/helpers/orderORM.helper';
 @Injectable()
 export class ThreadService {
   constructor(
@@ -47,11 +47,14 @@ export class ThreadService {
     };
   }
 
-  async createTread(createThreadDto: CreateThreadDto): Promise<Thread> {
-    const { title, content, imageUrl, authorId, forumId } = createThreadDto;
+  async createTread(
+    uuid: string,
+    createThreadDto: CreateThreadDto,
+  ): Promise<Thread> {
+    const { title, content, imageUrl, forumId } = createThreadDto;
 
     const author = await this.accountRepository.findOne({
-      where: { uuid: authorId },
+      where: { uuid },
     });
     const forum = await this.forumRepository.findOne({
       where: { id: forumId },

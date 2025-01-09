@@ -24,10 +24,6 @@ export class CreateThreadDto {
   is_archived: boolean = false;
 
   @IsNotEmpty()
-  @IsString()
-  authorId: string;
-
-  @IsNotEmpty()
   @IsInt()
   forumId: number;
 }

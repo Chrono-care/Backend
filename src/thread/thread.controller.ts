@@ -10,7 +10,9 @@ import {
   Patch,
   Post,
   Query,
+  Request,
   Res,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
@@ -19,15 +21,17 @@ import { CreateThreadDto } from './dto/create-thread.dto';
 import {
   IPagination,
   PaginationParams,
-} from 'src/common/decorators/paginationParams.decorator';
+} from '../common/decorators/paginationParams.decorator';
 import {
   ISorting,
   SortingParams,
-} from 'src/common/decorators/sortingParams.decorator';
+} from '../common/decorators/sortingParams.decorator';
 import {
   FilteringParams,
   IFiltering,
-} from 'src/common/decorators/filteringParams.decorator';
+} from '../common/decorators/filteringParams.decorator';
+import { IAccountInfoFromRequest } from '../security/interfaces/accountInfoFromRequest.interface';
+import { JwtAuthGuard } from '../security/strategies/guards/jwt-auth.guard';
 
 const authorizedFields = ['id', 'title', 'content', 'is_archived'];
 @Controller('thread')
@@ -46,13 +50,17 @@ export class ThreadController {
   }
 
   @Post('/create')
+  @UseGuards(JwtAuthGuard)
   async create(
     @Res() response: Response,
+    @Request() request: IAccountInfoFromRequest,
     @Body(new ValidationPipe()) newThread: CreateThreadDto,
   ): Promise<Response> {
     return response
       .status(HttpStatus.CREATED)
-      .json(await this.threadService.createTread(newThread));
+      .json(
+        await this.threadService.createTread(request.user.userId, newThread),
+      );
   }
 
   @Patch('/archive/:id')

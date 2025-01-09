@@ -6,7 +6,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { instanceToPlain } from 'class-transformer';
-import { Thread } from 'src/thread/entities/thread.entity';
+import { Thread } from '../../thread/entities/thread.entity';
 
 @Entity()
 export class Forum {

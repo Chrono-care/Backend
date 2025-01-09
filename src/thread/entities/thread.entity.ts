@@ -1,4 +1,4 @@
-import { Account } from 'src/accounts/entities/account.entity';
+import { Account } from '../../accounts/entities/account.entity';
 import {
   Entity,
   Column,
@@ -8,7 +8,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { instanceToPlain } from 'class-transformer';
-import { Forum } from 'src/forums/entities/forum.entity';
+import { Forum } from '../../forums/entities/forum.entity';
 
 @Entity()
 export class Thread {

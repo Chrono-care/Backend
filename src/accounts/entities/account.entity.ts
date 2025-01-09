@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import * as argon2 from 'argon2';
 import { Exclude, instanceToPlain } from 'class-transformer';
-import { Thread } from 'src/thread/entities/thread.entity';
+import { Thread } from '../../thread/entities/thread.entity';
 
 @Entity()
 export class Account {
