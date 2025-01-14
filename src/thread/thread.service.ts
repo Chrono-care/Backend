@@ -10,6 +10,7 @@ import { IPagination } from '../common/decorators/paginationParams.decorator';
 import { ISorting } from '../common/decorators/sortingParams.decorator';
 import { IFiltering } from '../common/decorators/filteringParams.decorator';
 import { getOrder, getWhere } from '../common/helpers/orderORM.helper';
+import { UpdateThreadDto } from './dto/update-thread.dto';
 @Injectable()
 export class ThreadService {
   constructor(
@@ -23,7 +24,7 @@ export class ThreadService {
     private readonly forumRepository: Repository<Forum>,
   ) {}
 
-  async getAllTreads(
+  async getAllThreads(
     { page, limit, size, offset }: IPagination,
     sort?: ISorting,
     filter?: IFiltering[],
@@ -47,7 +48,38 @@ export class ThreadService {
     };
   }
 
-  async createTread(
+  async updateThread(
+    id: number,
+    uuid: string,
+    updateThread: UpdateThreadDto,
+  ): Promise<Thread> {
+    const thread = await this.threadRepository.findOneBy({ id });
+
+    const { title, content, imageUrl, forumId } = updateThread;
+
+    if (!thread) throw new NotFoundException(`Le thread ${id} n'existe pas.`);
+
+    const author = await this.accountRepository.findOne({
+      where: { uuid },
+    });
+    const forum = await this.forumRepository.findOne({
+      where: { id: forumId },
+    });
+
+    if (!author || !forum)
+      throw new NotFoundException('Author or Forum not found');
+
+    return await this.threadRepository.save({
+      ...thread,
+      title,
+      content,
+      imageUrl,
+      author,
+      forum,
+    });
+  }
+
+  async createThread(
     uuid: string,
     createThreadDto: CreateThreadDto,
   ): Promise<Thread> {
@@ -74,7 +106,7 @@ export class ThreadService {
     return this.threadRepository.save(thread);
   }
 
-  async archiveTread(id: number, set: boolean): Promise<Thread> {
+  async archiveThread(id: number, set: boolean): Promise<Thread> {
     const thread = await this.threadRepository.findOneBy({ id });
     if (!thread) {
       throw new NotFoundException(`Le forum ${id} n'existe pas.`);

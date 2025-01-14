@@ -32,6 +32,7 @@ import {
 } from '../common/decorators/filteringParams.decorator';
 import { IAccountInfoFromRequest } from '../security/interfaces/accountInfoFromRequest.interface';
 import { JwtAuthGuard } from '../security/strategies/guards/jwt-auth.guard';
+import { UpdateThreadDto } from './dto/update-thread.dto';
 
 const authorizedFields = ['id', 'title', 'content', 'is_archived'];
 @Controller('thread')
@@ -46,7 +47,7 @@ export class ThreadController {
   ): Promise<Response> {
     return response
       .status(HttpStatus.OK)
-      .json(await this.threadService.getAllTreads(pagination, sort, filter));
+      .json(await this.threadService.getAllThreads(pagination, sort, filter));
   }
 
   @Post('/create')
@@ -59,7 +60,26 @@ export class ThreadController {
     return response
       .status(HttpStatus.CREATED)
       .json(
-        await this.threadService.createTread(request.user.userId, newThread),
+        await this.threadService.createThread(request.user.userId, newThread),
+      );
+  }
+
+  @Patch('/update/:id')
+  @UseGuards(JwtAuthGuard)
+  async update(
+    @Res() response: Response,
+    @Param('id', ParseIntPipe) id: number,
+    @Request() request: IAccountInfoFromRequest,
+    @Body(new ValidationPipe()) updatedThread: UpdateThreadDto,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.OK)
+      .json(
+        await this.threadService.updateThread(
+          id,
+          request.user.userId,
+          updatedThread,
+        ),
       );
   }
 
@@ -71,6 +91,6 @@ export class ThreadController {
   ): Promise<Response> {
     return response
       .status(HttpStatus.OK)
-      .json(await this.threadService.archiveTread(id, set));
+      .json(await this.threadService.archiveThread(id, set));
   }
 }

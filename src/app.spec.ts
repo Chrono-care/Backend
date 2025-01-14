@@ -148,6 +148,16 @@ describe('End-to-end Testing', () => {
       expect(res.body.items.length).toBe(res.body.totalItems);
     });
 
+    it('should update the thread /thread/update/:id)', async () => {
+      const res = await request(app.getHttpServer())
+        .patch('/thread/update/' + threadId)
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+          content: 'updated content',
+        });
+      expect(res.body.content).toBe('updated content');
+    });
+
     it('should archive the thread (/thread/archive/:id)', async () => {
       const res = await request(app.getHttpServer())
         .patch('/thread/archive/' + threadId)
