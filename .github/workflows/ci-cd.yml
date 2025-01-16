@@ -64,9 +64,9 @@ jobs:
       - name: Build Docker Image
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            docker build --target prod-ci -t back-prod:latest ./.docker/
+            docker build --target prod-ci -t back-dev:latest ./ -f ./.docker/Dockerfile
           elif [[ "${{ github.ref }}" == "refs/heads/develop" || "${{ github.ref }}" == "refs/pull/7/merge" ]]; then
-            docker build --target dev-ci -t back-dev:latest ./.docker/
+            docker build --target dev-ci -t back-dev:latest ./ -f ./.docker/Dockerfile
           else
             echo "Branch '${{ github.ref }}' not recognized. Skipping build."
             exit 0
