@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - docker # Testing ci
   pull_request:
     branches:
       - main
@@ -87,7 +88,7 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             IMAGE_NAME="back-prod"
-          elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+          elif [[ "${{ github.ref }}" == "refs/heads/develop" ] || [ "${{ github.ref }}" == "refs/heads/docker" ]]; then
             IMAGE_NAME="back-dev"
           else
             echo "Branch '${{ github.ref }}' not recognized. Skipping Docker tag and push."
@@ -102,6 +103,5 @@ jobs:
           # Pushing the image to Docker Hub
           docker push chronocare/${IMAGE_NAME}:latest
           docker push chronocare/${IMAGE_NAME}:${VERSION}
-
 
   
