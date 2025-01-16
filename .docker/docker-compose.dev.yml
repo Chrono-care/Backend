@@ -1,11 +1,12 @@
 services:
   back:
     build:
+      context: ../
+      dockerfile: ./.docker/Dockerfile
       target: dev
     container_name: back-app-dev
     volumes:
       - ./../:/app:delegated
-      - ./entrypoint.sh:/app/.docker/entrypoint.sh:ro
     networks:
       - devops-network
     env_file:

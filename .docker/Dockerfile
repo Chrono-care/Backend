@@ -5,7 +5,7 @@ WORKDIR /app
 CMD ["sh", "/entrypoint.sh"]
 
 FROM base AS dev
-COPY ./entrypoint.sh /
+COPY ./.docker/entrypoint.sh /
 
 FROM base AS prod
 COPY ./.docker/entrypoint.sh /
