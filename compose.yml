@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: chronocare
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: chronocare
+    volumes:
+      - postgres_data:/var/lib/postgresql/data:rw
+    ports:
+      - '5440:5432'
+
+  backend:
+    build:
+      context: .
+    user: "1000:1000"
+    restart: unless-stopped
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      POSTGRES_DB_HOST: db
+      POSTGRES_DB_PORT: 5432
+      POSTGRES_DB_USER: chronocare
+      POSTGRES_DB_PASS: test
+      POSTGRES_DB_NAME: chronocare
+    ports:
+      - '8080:3000'
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
