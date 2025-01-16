@@ -104,4 +104,11 @@ jobs:
           docker push chronocare/${IMAGE_NAME}:latest
           docker push chronocare/${IMAGE_NAME}:${VERSION}
 
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+
+      - name: Run script on server with password
+        run: |
+          sshpass -p "H2xZAoUE3XYrM2tiyrc08pMW" ssh -o StrictHostKeyChecking=no -l dev punio.eu "bash /home/docker/update.sh"
+
   
