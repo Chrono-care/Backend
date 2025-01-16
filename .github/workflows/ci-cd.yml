@@ -88,7 +88,7 @@ jobs:
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             IMAGE_NAME="back-prod"
-          elif [[ "${{ github.ref }}" == "refs/heads/develop" ] || [ "${{ github.ref }}" == "refs/heads/docker" ]]; then
+          elif [[ "${{ github.ref }}" == "refs/heads/develop" || "${{ github.ref }}" == "refs/heads/docker" ]]; then
             IMAGE_NAME="back-dev"
           else
             echo "Branch '${{ github.ref }}' not recognized. Skipping Docker tag and push."
