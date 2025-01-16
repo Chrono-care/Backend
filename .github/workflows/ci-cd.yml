@@ -63,9 +63,9 @@ jobs:
       - name: Build Docker Image
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            docker build --target prod-ci -t front-prod:latest ./.docker/
+            docker build --target prod-ci -t back-prod:latest ./.docker/
           elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            docker build --target dev -t front-dev:latest ./.docker/
+            docker build --target dev -t back-dev:latest ./.docker/
           else
             echo "Branch '${{ github.ref }}' not recognized. Skipping build."
             exit 0
@@ -86,9 +86,9 @@ jobs:
       - name: Tag and Push Docker Image
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            IMAGE_NAME="front-prod"
+            IMAGE_NAME="back-prod"
           elif [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
-            IMAGE_NAME="front-dev"
+            IMAGE_NAME="back-dev"
           else
             echo "Branch '${{ github.ref }}' not recognized. Skipping Docker tag and push."
             exit 0
