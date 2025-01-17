@@ -5,9 +5,12 @@ import {
   BeforeInsert,
   BeforeUpdate,
   Timestamp,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import * as argon2 from 'argon2';
 import { Exclude, instanceToPlain } from 'class-transformer';
+import { Subscribe } from 'src/forums/entities/subscribe.entity';
 
 @Entity()
 export class Account {
@@ -38,6 +41,10 @@ export class Account {
 
   @Column({ default: false })
   validated: boolean;
+
+  @OneToMany(() => Subscribe, (subscribe) => subscribe.account)
+  @JoinColumn({ name: 'uuid' })
+  subscribes: Subscribe[];
 
   @BeforeInsert()
   @BeforeUpdate()

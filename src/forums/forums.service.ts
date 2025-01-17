@@ -13,12 +13,16 @@ import { Forum } from './entities/forum.entity';
 import { getOrder, getWhere } from '../common/helpers/orderORM.helper';
 import { CreateForumDto } from './dto/create-forum.dto';
 import { UpdateForumDto } from './dto/update-forum.dto';
+import { Subscribe } from './entities/subscribe.entity';
+import { Account } from 'src/accounts/entities/account.entity';
 
 @Injectable()
 export class ForumsService {
   constructor(
     @InjectRepository(Forum)
-    private forumsRepository: Repository<Forum>,
+    private readonly forumsRepository: Repository<Forum>,
+    @InjectRepository(Account)
+    private readonly accountsRepository: Repository<Account>,
   ) {}
 
   async getAllForums(
@@ -78,5 +82,57 @@ export class ForumsService {
     }
     await this.forumsRepository.delete({ id });
     return forum;
+  }
+
+  async getSubscribers(forumId: number): Promise<Subscribe[]> {
+    const forum = await this.forumsRepository.findOneBy({ id: forumId });
+    if (!forum) {
+      throw new NotFoundException(`Le forum ${forumId} n'existe pas.`);
+    }
+    return await this.forumsRepository
+      .createQueryBuilder()
+      .relation(Forum, 'subscribers')
+      .of(forum)
+      .loadMany();
+  }
+
+  async addSubscriber(forumId: number, accountId: string): Promise<Subscribe> {
+    const forum = await this.forumsRepository.findOneBy({ id: forumId });
+    if (!forum) {
+      throw new NotFoundException(`Le forum ${forumId} n'existe pas.`);
+    }
+    const account = await this.accountsRepository.findOneBy({
+      uuid: accountId,
+    });
+    if (!account) {
+      throw new NotFoundException(`L'utilisateur ${accountId} n'existe pas.`);
+    }
+    const subscribe = new Subscribe();
+    subscribe.account = account;
+    subscribe.forum = forum;
+    await this.forumsRepository
+      .createQueryBuilder()
+      .relation(Forum, 'subscribers')
+      .of(forum)
+      .add(subscribe);
+    return subscribe;
+  }
+
+  async removeSubscriber(forumId: number, accountId: string): Promise<void> {
+    const forum = await this.forumsRepository.findOneBy({ id: forumId });
+    if (!forum) {
+      throw new NotFoundException(`Le forum ${forumId} n'existe pas.`);
+    }
+    const account = await this.accountsRepository.findOneBy({
+      uuid: accountId,
+    });
+    if (!account) {
+      throw new NotFoundException(`L'utilisateur ${accountId} n'existe pas.`);
+    }
+    await this.forumsRepository
+      .createQueryBuilder()
+      .relation(Forum, 'subscribers')
+      .of(forum)
+      .remove(account);
   }
 }
