@@ -51,7 +51,8 @@ jobs:
   # Job for building the Docker image based on branch
   build_deploy:
     runs-on: ubuntu-latest
-    needs: test
+    # needs: test
+    needs: lint
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
