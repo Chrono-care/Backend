@@ -6,9 +6,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 import { instanceToPlain } from 'class-transformer';
 import { Forum } from '../../forums/entities/forum.entity';
+import { Reply } from 'src/reply/entities/reply.entity';
 
 @Entity()
 export class Thread {
@@ -29,6 +31,9 @@ export class Thread {
 
   @Column({ type: 'boolean', default: false })
   is_archived: boolean;
+
+  @OneToMany(() => Reply, (reply) => reply.thread)
+  replies: Reply[];
 
   @CreateDateColumn()
   createdAt: Date;

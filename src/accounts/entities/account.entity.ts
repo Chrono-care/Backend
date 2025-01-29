@@ -12,6 +12,7 @@ import * as argon2 from 'argon2';
 import { Subscribe } from 'src/forums/entities/subscribe.entity';
 import { Exclude, instanceToPlain } from 'class-transformer';
 import { Thread } from '../../thread/entities/thread.entity';
+import { Reply } from 'src/reply/entities/reply.entity';
 
 @Entity()
 export class Account {
@@ -48,7 +49,10 @@ export class Account {
   subscribes: Subscribe[];
 
   @OneToMany(() => Thread, (thread) => thread.author)
-  threads: Thread[]; // This property represents the user's threads
+  threads: Thread[];
+
+  @OneToMany(() => Reply, (reply) => reply.author)
+  replies: Reply[];
 
   @BeforeInsert()
   @BeforeUpdate()
