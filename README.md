@@ -512,6 +512,7 @@
   
 ### Response
 
+```json
 {
     "account": {
         "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
@@ -534,6 +535,7 @@
     "id": 1,
     "creation_date": "2025-01-29T13:50:40.148Z"
 }
+```
 
 ### Query parameters
 
@@ -546,6 +548,7 @@
   
 ### Response
 
+```json
 {
     "account": {
         "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
@@ -568,6 +571,8 @@
     "id": 1,
     "creation_date": "2025-01-29T13:50:40.148Z"
 }
+```
+
 </details>
 <details><summary>DELETE /forum/subscribe/me/:forumId</summary>
   
@@ -588,9 +593,11 @@
   
 ### Response
 
+```json
 {
     "creation_date": "2025-01-29T13:50:40.148Z"
 }
+```
 
 </details>
 
