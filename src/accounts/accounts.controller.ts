@@ -193,4 +193,27 @@ export class AccountsController {
       message: 'Utilisateur supprimé avec succès.',
     });
   }
+
+  @Get('/subscriptions/me')
+  @UseGuards(JwtAuthGuard)
+  async getSubscriptions(
+    @Res() response: Response,
+    @Request() request: IAccountInfoFromRequest,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.OK)
+      .json(
+        await this.accountsService.getSubscribedForums(request.user.userId),
+      );
+  }
+
+  @Get('/subscriptions/:uuid')
+  async getSubscriptionsByUuid(
+    @Res() response: Response,
+    @Param('uuid') uuid: string,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.OK)
+      .json(await this.accountsService.getSubscribedForums(uuid));
+  }
 }

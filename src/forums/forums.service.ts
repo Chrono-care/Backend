@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -23,6 +24,8 @@ export class ForumsService {
     private readonly forumsRepository: Repository<Forum>,
     @InjectRepository(Account)
     private readonly accountsRepository: Repository<Account>,
+    @InjectRepository(Subscribe)
+    private readonly subscribeRepository: Repository<Subscribe>,
   ) {}
 
   async getAllForums(
@@ -84,16 +87,16 @@ export class ForumsService {
     return forum;
   }
 
-  async getSubscribers(forumId: number): Promise<Subscribe[]> {
+  async getSubscribers(forumId: number): Promise<Account[]> {
     const forum = await this.forumsRepository.findOneBy({ id: forumId });
     if (!forum) {
       throw new NotFoundException(`Le forum ${forumId} n'existe pas.`);
     }
-    return await this.forumsRepository
-      .createQueryBuilder()
-      .relation(Forum, 'subscribers')
-      .of(forum)
-      .loadMany();
+    const forumData = await this.forumsRepository.findOne({
+      where: { id: forumId },
+      relations: ['subscribers', 'subscribers.account'],
+    });
+    return forumData.subscribers.map((subscriber) => subscriber.account);
   }
 
   async addSubscriber(forumId: number, accountId: string): Promise<Subscribe> {
@@ -107,18 +110,22 @@ export class ForumsService {
     if (!account) {
       throw new NotFoundException(`L'utilisateur ${accountId} n'existe pas.`);
     }
+    const existingSubscription = await this.subscribeRepository.findOne({
+      where: { account: { uuid: accountId }, forum: { id: forumId } },
+    });
+    if (existingSubscription) {
+      throw new ConflictException(`L'utilisateur est déjà abonné à ce forum.`);
+    }
     const subscribe = new Subscribe();
     subscribe.account = account;
     subscribe.forum = forum;
-    await this.forumsRepository
-      .createQueryBuilder()
-      .relation(Forum, 'subscribers')
-      .of(forum)
-      .add(subscribe);
-    return subscribe;
+    return this.subscribeRepository.save(subscribe);
   }
 
-  async removeSubscriber(forumId: number, accountId: string): Promise<void> {
+  async removeSubscriber(
+    forumId: number,
+    accountId: string,
+  ): Promise<Subscribe> {
     const forum = await this.forumsRepository.findOneBy({ id: forumId });
     if (!forum) {
       throw new NotFoundException(`Le forum ${forumId} n'existe pas.`);
@@ -129,10 +136,15 @@ export class ForumsService {
     if (!account) {
       throw new NotFoundException(`L'utilisateur ${accountId} n'existe pas.`);
     }
-    await this.forumsRepository
-      .createQueryBuilder()
-      .relation(Forum, 'subscribers')
-      .of(forum)
-      .remove(account);
+    const subscription = await this.subscribeRepository.findOne({
+      where: { forum: { id: forumId }, account: { uuid: accountId } },
+    });
+    if (!subscription) {
+      throw new NotFoundException(
+        `L'utilisateur ${accountId} n'est pas abonné au forum ${forumId}.`,
+      );
+    }
+    await this.subscribeRepository.remove(subscription);
+    return subscription;
   }
 }

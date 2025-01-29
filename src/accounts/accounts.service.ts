@@ -13,6 +13,7 @@ import { ISorting } from '../common/decorators/sortingParams.decorator';
 import { IFiltering } from '../common/decorators/filteringParams.decorator';
 import { PaginatedResource } from '../common/dto/paginated-resource.dto';
 import { getOrder, getWhere } from '../common/helpers/orderORM.helper';
+import { Forum } from 'src/forums/entities/forum.entity';
 
 @Injectable()
 export class AccountsService {
@@ -126,5 +127,16 @@ export class AccountsService {
       );
     }
     return result;
+  }
+
+  async getSubscribedForums(uuid: string): Promise<Forum[]> {
+    const account = await this.accountsRepository.findOne({
+      where: { uuid },
+      relations: ['subscribes', 'subscribes.forum'],
+    });
+    if (!account) {
+      throw new NotFoundException(`L'utilisateur ${uuid} n'existe pas.`);
+    }
+    return account.subscribes.map((subscribe) => subscribe.forum);
   }
 }

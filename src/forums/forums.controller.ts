@@ -105,27 +105,53 @@ export class forumsController {
       .json(await this.forumsService.getSubscribers(id));
   }
 
-  @Post('/subscribe/:id')
+  @Post('/subscribe/me/:forumId')
   @UseGuards(JwtAuthGuard)
-  async addSubscriber(
+  async subscribe(
     @Res() response: Response,
-    @Param('id', ParseIntPipe) id: number,
+    @Param('forumId', ParseIntPipe) forumId: number,
     @Request() request: IAccountInfoFromRequest,
   ): Promise<Response> {
     return response
       .status(HttpStatus.CREATED)
-      .json(await this.forumsService.addSubscriber(id, request.user.userId));
+      .json(
+        await this.forumsService.addSubscriber(forumId, request.user.userId),
+      );
   }
 
-  @Delete('/subscribe/:id')
+  @Delete('/subscribe/me/:forumId')
   @UseGuards(JwtAuthGuard)
-  async removeSubscriber(
+  async unsubscribe(
     @Res() response: Response,
-    @Param('id', ParseIntPipe) id: number,
+    @Param('forumId', ParseIntPipe) forumId: number,
     @Request() request: IAccountInfoFromRequest,
   ): Promise<Response> {
     return response
       .status(HttpStatus.OK)
-      .json(await this.forumsService.removeSubscriber(id, request.user.userId));
+      .json(
+        await this.forumsService.removeSubscriber(forumId, request.user.userId),
+      );
+  }
+
+  @Post('/subscribe/:forumId/:accountId')
+  async addSubscriber(
+    @Res() response: Response,
+    @Param('forumId', ParseIntPipe) forumId: number,
+    @Param('accountId') accountId: string,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.CREATED)
+      .json(await this.forumsService.addSubscriber(forumId, accountId));
+  }
+
+  @Delete('/subscribe/:forumId/:accountId')
+  async removeSubscriber(
+    @Res() response: Response,
+    @Param('forumId', ParseIntPipe) forumId: number,
+    @Param('accountId') accountId: string,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.OK)
+      .json(await this.forumsService.removeSubscriber(forumId, accountId));
   }
 }
