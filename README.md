@@ -261,6 +261,7 @@
 </details>
 
 <details><summary>GET /accounts/subscriptions/me</summary>
+  
 ### Response
 
 ```json
@@ -284,6 +285,7 @@
 
 </details>
 <details><summary>GET /accounts/subscriptions/:uuid</summary>
+  
 ### Response
 
 ```json
@@ -433,6 +435,7 @@
 </details>
 <details>
 <summary>PATCH /forum/update/:id</summary>
+  
 ### Response
 
 ```json
@@ -486,6 +489,7 @@
 
 </details>
 <details><summary>GET /forum/subscribers/:forumId</summary>
+  
 ### Response
 
 ```json
@@ -505,6 +509,7 @@
 
 </details>
 <details><summary>POST /forum/subscribe/me/:forumId</summary>
+  
 ### Response
 
 {
@@ -538,6 +543,7 @@
 
 </details>
 <details><summary>POST /forum/subscribe/:forumId/:accountId</summary>
+  
 ### Response
 
 {
@@ -564,6 +570,7 @@
 }
 </details>
 <details><summary>DELETE /forum/subscribe/me/:forumId</summary>
+  
 ### Response
 
 {
@@ -578,6 +585,7 @@
 
 </details>
 <details><summary>DELETE /forum/subscribe/:forumId/:accountId</summary>
+  
 ### Response
 
 {
@@ -588,6 +596,7 @@
 
 ## Thread
 <details><summary>GET /thread</summary>
+  
 ### Response
 
 ```json
@@ -665,6 +674,7 @@
 
 </details>
 <details><summary>POST /thread/create</summary>
+  
 ### Response
 
 ```json
@@ -714,6 +724,7 @@
 
 </details>
 <details><summary>PATCH /thread/update/:id</summary>
+  
 ### Response
 
 ```json
@@ -764,6 +775,7 @@
 ```
 </details>
 <details><summary>DELETE /thread/archive/:id</summary>
+  
 ### Response
 
 ```json
