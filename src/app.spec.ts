@@ -123,6 +123,50 @@ describe('End-to-end Testing', () => {
     });
   });
 
+  let threadId: number;
+  describe('Thread', () => {
+    it('should create a new thread (/thread/create)', async () => {
+      const res = await request(app.getHttpServer())
+        .post('/thread/create')
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+          title: 'Test 2',
+          content:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum',
+          forumId: 1,
+        })
+        .expect(201);
+      expect(res.body).toHaveProperty('id');
+      threadId = res.body.id;
+    });
+
+    it('should get all threads (/thread)', async () => {
+      const res = await request(app.getHttpServer()).get('/thread').expect(200);
+      expect(
+        res.body instanceof Object && res.body.items instanceof Array,
+      ).toBeTruthy();
+      expect(res.body.items.length).toBe(res.body.totalItems);
+    });
+
+    it('should update the thread /thread/update/:id)', async () => {
+      const res = await request(app.getHttpServer())
+        .patch('/thread/update/' + threadId)
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+          content: 'updated content',
+        });
+      expect(res.body.content).toBe('updated content');
+    });
+
+    it('should archive the thread (/thread/archive/:id)', async () => {
+      const res = await request(app.getHttpServer())
+        .patch('/thread/archive/' + threadId)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+      expect(res.body.is_archived).toBe(true);
+    });
+  });
+
   describe('Accounts (cleaning)', () => {
     it('should delete the user /accounts/delete/uuid/:uuid)', async () => {
       return await request(app.getHttpServer())

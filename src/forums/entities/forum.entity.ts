@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { instanceToPlain } from 'class-transformer';
 import { Subscribe } from './subscribe.entity';
+import { Thread } from '../../thread/entities/thread.entity';
 
 @Entity()
 export class Forum {
@@ -32,6 +33,9 @@ export class Forum {
   @OneToMany(() => Subscribe, (subscribe) => subscribe.forum)
   @JoinColumn({ name: 'id' })
   subscribers: Subscribe[];
+
+  @OneToMany(() => Thread, (thread) => thread.forum)
+  threads: Thread[];
 
   toJSON(): Record<string, unknown> {
     return instanceToPlain(this);

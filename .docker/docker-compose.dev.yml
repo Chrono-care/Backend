@@ -1,0 +1,19 @@
+services:
+  back:
+    build:
+      context: ../
+      dockerfile: ./.docker/Dockerfile
+      target: dev
+    container_name: back-app-dev
+    volumes:
+      - ./../:/app:delegated
+    networks:
+      - devops-network
+    env_file:
+      - ../../DevOps/.env.dev
+    environment:
+      - NODE_ENV=development
+
+networks:
+  devops-network:
+    external: true

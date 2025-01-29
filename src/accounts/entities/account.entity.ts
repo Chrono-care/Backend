@@ -9,8 +9,9 @@ import {
   JoinColumn,
 } from 'typeorm';
 import * as argon2 from 'argon2';
-import { Exclude, instanceToPlain } from 'class-transformer';
 import { Subscribe } from 'src/forums/entities/subscribe.entity';
+import { Exclude, instanceToPlain } from 'class-transformer';
+import { Thread } from '../../thread/entities/thread.entity';
 
 @Entity()
 export class Account {
@@ -45,6 +46,9 @@ export class Account {
   @OneToMany(() => Subscribe, (subscribe) => subscribe.account)
   @JoinColumn({ name: 'uuid' })
   subscribes: Subscribe[];
+
+  @OneToMany(() => Thread, (thread) => thread.author)
+  threads: Thread[]; // This property represents the user's threads
 
   @BeforeInsert()
   @BeforeUpdate()

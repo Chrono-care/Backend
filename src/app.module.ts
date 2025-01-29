@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as fsStore from 'cache-manager-fs-hash';
 import { AccountsModule } from './accounts/accounts.module';
 import { SecurityModule } from './security/security.module';
+import { ThreadModule } from './thread/thread.module';
 import { forumsModule } from './forums/forums.module';
 
 @Module({
@@ -20,18 +21,19 @@ import { forumsModule } from './forums/forums.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get('POSTGRES_DB_HOST'),
-        port: configService.get('POSTGRES_DB_PORT'),
-        username: configService.get('POSTGRES_DB_USER'),
-        password: configService.get('POSTGRES_DB_PASS'),
-        database: configService.get('POSTGRES_DB_NAME'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        host: configService.get<string>('POSTGRES_HOST'),
+        port: parseInt(configService.get<string>('POSTGRES_PORT'), 10) || 5432,
+        username: configService.get<string>('POSTGRES_USER'),
+        password: configService.get<string>('POSTGRES_PASSWORD'),
+        database: configService.get<string>('POSTGRES_DB'),
+        entities: [__dirname + '/**/**/*.entity.{js,ts}'],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
     AccountsModule,
     SecurityModule,
+    ThreadModule,
     forumsModule,
   ],
   controllers: [],
