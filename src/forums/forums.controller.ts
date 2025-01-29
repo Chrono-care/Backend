@@ -11,7 +11,9 @@ import {
   Patch,
   Post,
   Query,
+  Request,
   Res,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import {
@@ -30,6 +32,8 @@ import { Response } from 'express';
 import { CreateForumDto } from './dto/create-forum.dto';
 import { UpdateForumDto } from './dto/update-forum.dto';
 import { ForumsService } from './forums.service';
+import { IAccountInfoFromRequest } from 'src/security/interfaces/accountInfoFromRequest.interface';
+import { JwtAuthGuard } from 'src/security/strategies/guards/jwt-auth.guard';
 
 const authorizedFields = ['id', 'title', 'description', 'is_archived'];
 
@@ -89,5 +93,65 @@ export class forumsController {
     return response
       .status(HttpStatus.OK)
       .json(await this.forumsService.deleteForum(id));
+  }
+
+  @Get('/subscribers/:id')
+  async getSubscribers(
+    @Res() response: Response,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.OK)
+      .json(await this.forumsService.getSubscribers(id));
+  }
+
+  @Post('/subscribe/me/:forumId')
+  @UseGuards(JwtAuthGuard)
+  async subscribe(
+    @Res() response: Response,
+    @Param('forumId', ParseIntPipe) forumId: number,
+    @Request() request: IAccountInfoFromRequest,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.CREATED)
+      .json(
+        await this.forumsService.addSubscriber(forumId, request.user.userId),
+      );
+  }
+
+  @Delete('/subscribe/me/:forumId')
+  @UseGuards(JwtAuthGuard)
+  async unsubscribe(
+    @Res() response: Response,
+    @Param('forumId', ParseIntPipe) forumId: number,
+    @Request() request: IAccountInfoFromRequest,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.OK)
+      .json(
+        await this.forumsService.removeSubscriber(forumId, request.user.userId),
+      );
+  }
+
+  @Post('/subscribe/:forumId/:accountId')
+  async addSubscriber(
+    @Res() response: Response,
+    @Param('forumId', ParseIntPipe) forumId: number,
+    @Param('accountId') accountId: string,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.CREATED)
+      .json(await this.forumsService.addSubscriber(forumId, accountId));
+  }
+
+  @Delete('/subscribe/:forumId/:accountId')
+  async removeSubscriber(
+    @Res() response: Response,
+    @Param('forumId', ParseIntPipe) forumId: number,
+    @Param('accountId') accountId: string,
+  ): Promise<Response> {
+    return response
+      .status(HttpStatus.OK)
+      .json(await this.forumsService.removeSubscriber(forumId, accountId));
   }
 }

@@ -6,8 +6,10 @@ import {
   BeforeUpdate,
   Timestamp,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 import * as argon2 from 'argon2';
+import { Subscribe } from 'src/forums/entities/subscribe.entity';
 import { Exclude, instanceToPlain } from 'class-transformer';
 import { Thread } from '../../thread/entities/thread.entity';
 
@@ -40,6 +42,10 @@ export class Account {
 
   @Column({ default: false })
   validated: boolean;
+
+  @OneToMany(() => Subscribe, (subscribe) => subscribe.account)
+  @JoinColumn({ name: 'uuid' })
+  subscribes: Subscribe[];
 
   @OneToMany(() => Thread, (thread) => thread.author)
   threads: Thread[]; // This property represents the user's threads

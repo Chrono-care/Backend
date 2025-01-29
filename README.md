@@ -259,6 +259,47 @@
 - Authorization: Bearer + valid JWT Token
 
 </details>
+
+<details><summary>GET /accounts/subscriptions/me</summary>
+### Response
+
+```json
+[
+    {
+        "id": 1,
+        "title": "Test 15",
+        "description": "Lorem Ipsum Dolor",
+        "img_url": "https://test.test.ts/blabla.png",
+        "creation_date": "2025-01-29T13:36:51.802Z",
+        "is_archived": false
+    }
+]
+```
+
+### Query parameters
+
+#### Headers
+
+- Authorization: Bearer + valid JWT Token
+
+</details>
+<details><summary>GET /accounts/subscriptions/:uuid</summary>
+### Response
+
+```json
+[
+    {
+        "id": 1,
+        "title": "Test 15",
+        "description": "Lorem Ipsum Dolor",
+        "img_url": "https://test.test.ts/blabla.png",
+        "creation_date": "2025-01-29T13:36:51.802Z",
+        "is_archived": false
+    }
+]
+```
+
+</details>
 <details>
 <summary>POST /login </summary>
 
@@ -444,3 +485,323 @@
 - set (optional, true by default): boolean used to specify a value to is_archived.
 
 </details>
+<details><summary>GET /forum/subscribers/:forumId</summary>
+### Response
+
+```json
+[
+    {
+        "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
+        "email": "pascal.test@test.bla",
+        "firstname": "Pascal",
+        "lastname": "Test",
+        "phone": "+33609090909",
+        "karma": 0,
+        "global_bantime": "0",
+        "validated": false
+    }
+]
+```
+
+</details>
+<details><summary>POST /forum/subscribe/me/:forumId</summary>
+### Response
+
+{
+    "account": {
+        "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
+        "email": "pascal.test@test.bla",
+        "firstname": "Pascal",
+        "lastname": "Test",
+        "phone": "+33609090909",
+        "karma": 0,
+        "global_bantime": "0",
+        "validated": false
+    },
+    "forum": {
+        "id": 1,
+        "title": "Test 15",
+        "description": "Lorem Ipsum Dolor",
+        "img_url": "https://test.test.ts/blabla.png",
+        "creation_date": "2025-01-29T13:36:51.802Z",
+        "is_archived": false
+    },
+    "id": 1,
+    "creation_date": "2025-01-29T13:50:40.148Z"
+}
+
+### Query parameters
+
+#### Headers
+
+- Authorization: Bearer + valid JWT Token
+
+</details>
+<details><summary>POST /forum/subscribe/:forumId/:accountId</summary>
+### Response
+
+{
+    "account": {
+        "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
+        "email": "pascal.test@test.bla",
+        "firstname": "Pascal",
+        "lastname": "Test",
+        "phone": "+33609090909",
+        "karma": 0,
+        "global_bantime": "0",
+        "validated": false
+    },
+    "forum": {
+        "id": 1,
+        "title": "Test 15",
+        "description": "Lorem Ipsum Dolor",
+        "img_url": "https://test.test.ts/blabla.png",
+        "creation_date": "2025-01-29T13:36:51.802Z",
+        "is_archived": false
+    },
+    "id": 1,
+    "creation_date": "2025-01-29T13:50:40.148Z"
+}
+</details>
+<details><summary>DELETE /forum/subscribe/me/:forumId</summary>
+### Response
+
+{
+    "creation_date": "2025-01-29T13:50:40.148Z"
+}
+
+### Query parameters
+
+#### Headers
+
+- Authorization: Bearer + valid JWT Token
+
+</details>
+<details><summary>DELETE /forum/subscribe/:forumId/:accountId</summary>
+### Response
+
+{
+    "creation_date": "2025-01-29T13:50:40.148Z"
+}
+
+</details>
+
+## Thread
+<details><summary>GET /thread</summary>
+### Response
+
+```json
+{
+  "totalItems": 1,
+  "items": [
+        {
+            "id": 1,
+            "title": "Thread Test",
+            "content": "Thread content",
+            "imageUrl": "https://blablatest12312.fr/test/img.png",
+            "ratio": null,
+            "is_archived": false,
+            "createdAt": "2025-01-29T14:27:19.629Z",
+            "updatedAt": "2025-01-29T14:27:19.629Z"
+        }
+  ],
+  "page": 0,
+  "size": 15
+}
+```
+
+### Query Parameters
+
+#### URL Parameters
+
+#### Pagination
+
+- page: Page number (default: 0) (e.g. page=2)
+- size: Number of items per page (default: 15) (e.g. size=20)
+
+#### Sorting
+
+- sort: Setting for sorting the results. Format = property:direction (e.g. sort=email:asc)
+
+  - property: Property to sort by
+  - direction: Sorting direction (asc or desc)
+
+#### Filtering
+
+- filter: Setting for filtering the results. Format = property:method:value (e.g. filter=email:eq:test@test.com)
+
+  - property: Property to filter by
+  - value: Value to filter by
+  - method: Filtering method (eq, ne, gt, gte, lt, lte, like, nlike, in, nin, isnull, isnotnull)
+
+### Options documentation
+
+#### Available properties
+
+- id: number
+- title: string
+- content: string
+- is_archived: boolean
+
+#### Available filtering methods
+
+- eq: Equals
+- neq: Not equals
+- gt: Greater than
+- gte: Greater than or equals
+- lt: Less than
+- lte: Less than or equals
+- like: Like
+- nlike: Not like
+- in: In
+- nin: Not in
+- isnull: Is null
+- isnotnull: Is not null
+
+#### Available sorting methods
+
+- asc: Ascending
+- desc: Descending
+
+</details>
+<details><summary>POST /thread/create</summary>
+### Response
+
+```json
+{
+    "title": "Thread Test1",
+    "content": "Thread content",
+    "imageUrl": "https://blablatest12312.fr/test/img.png",
+    "author": {
+        "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
+        "email": "pascal.test@test.bla",
+        "firstname": "Pascal",
+        "lastname": "Test",
+        "phone": "+33609090909",
+        "karma": 0,
+        "global_bantime": "0",
+        "validated": false
+    },
+    "forum": {
+        "id": 1,
+        "title": "Test 15",
+        "description": "Lorem Ipsum Dolor",
+        "img_url": "https://test.test.ts/blabla.png",
+        "creation_date": "2025-01-29T13:36:51.802Z",
+        "is_archived": false
+    },
+    "ratio": null,
+    "id": 2,
+    "is_archived": false,
+    "createdAt": "2025-01-29T14:37:24.011Z",
+    "updatedAt": "2025-01-29T14:37:24.011Z"
+}
+```
+
+### Query parameters
+
+#### Body
+
+```json
+{
+    "title": "Thread Test1",
+    "content": "Thread content",
+    "imageUrl": "https://blablatest12312.fr/test/img.png",
+    "is_archived": false,
+    "forumId": 1
+}
+```
+
+</details>
+<details><summary>PATCH /thread/update/:id</summary>
+### Response
+
+```json
+{
+    "title": "Thread Test1",
+    "content": "Thread content",
+    "imageUrl": "https://blablatest12312.fr/test/img.png",
+    "author": {
+        "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
+        "email": "pascal.test@test.bla",
+        "firstname": "Pascal",
+        "lastname": "Test",
+        "phone": "+33609090909",
+        "karma": 0,
+        "global_bantime": "0",
+        "validated": false
+    },
+    "forum": {
+        "id": 1,
+        "title": "Test 15",
+        "description": "Lorem Ipsum Dolor",
+        "img_url": "https://test.test.ts/blabla.png",
+        "creation_date": "2025-01-29T13:36:51.802Z",
+        "is_archived": false
+    },
+    "ratio": null,
+    "id": 2,
+    "is_archived": false,
+    "createdAt": "2025-01-29T14:37:24.011Z",
+    "updatedAt": "2025-01-29T14:37:24.011Z"
+}
+```
+
+### Query parameters
+
+#### Body
+
+**All properties are optional, you may only specify what you'd like to change.**
+
+```json
+{
+    "title": "Thread Test1",
+    "content": "Thread content",
+    "imageUrl": "https://blablatest12312.fr/test/img.png",
+    "is_archived": false,
+    "forumId": 1
+}
+```
+</details>
+<details><summary>DELETE /thread/archive/:id</summary>
+### Response
+
+```json
+{
+    "title": "Thread Test1",
+    "content": "Thread content",
+    "imageUrl": "https://blablatest12312.fr/test/img.png",
+    "author": {
+        "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
+        "email": "pascal.test@test.bla",
+        "firstname": "Pascal",
+        "lastname": "Test",
+        "phone": "+33609090909",
+        "karma": 0,
+        "global_bantime": "0",
+        "validated": false
+    },
+    "forum": {
+        "id": 1,
+        "title": "Test 15",
+        "description": "Lorem Ipsum Dolor",
+        "img_url": "https://test.test.ts/blabla.png",
+        "creation_date": "2025-01-29T13:36:51.802Z",
+        "is_archived": false
+    },
+    "ratio": null,
+    "id": 2,
+    "is_archived": true,
+    "createdAt": "2025-01-29T14:37:24.011Z",
+    "updatedAt": "2025-01-29T14:37:24.011Z"
+}
+```
+
+### Query Parameters
+
+#### URL Parameters
+
+- set (optional, true by default): boolean used to specify a value to is_archived.
+
+</details>
+
