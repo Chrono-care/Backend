@@ -1,6 +1,9 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
+  InternalServerErrorException,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,12 +17,15 @@ import { IFiltering } from '../common/decorators/filteringParams.decorator';
 import { PaginatedResource } from '../common/dto/paginated-resource.dto';
 import { getOrder, getWhere } from '../common/helpers/orderORM.helper';
 import { Forum } from 'src/forums/entities/forum.entity';
+import { MailsService } from '../mails/mails.service';
 
 @Injectable()
 export class AccountsService {
   constructor(
     @InjectRepository(Account)
     private accountsRepository: Repository<Account>,
+    @Inject(MailsService)
+    private mailsService: MailsService,
   ) {}
 
   /**
@@ -31,6 +37,7 @@ export class AccountsService {
   async createAccount(newAccount: CreateAccountDto): Promise<Account> {
     try {
       const createdAccount = this.accountsRepository.create(newAccount);
+      await this.mailsService.sendValidationEmail(createdAccount);
       return await this.accountsRepository.save(createdAccount);
     } catch (error) {
       console.debug(error.message);
@@ -138,5 +145,22 @@ export class AccountsService {
       throw new NotFoundException(`L'utilisateur ${uuid} n'existe pas.`);
     }
     return account.subscribes.map((subscribe) => subscribe.forum);
+  }
+  async validateEmail(uuid: string): Promise<void> {
+    const user = await this.accountsRepository.findOne({ where: { uuid } });
+    Logger.log(uuid);
+    if (!user)
+      throw new NotFoundException("Ce calineur de maman n'existe pas.");
+    user.validated = true;
+    Logger.log(
+      `User ${user.firstname} ${user.lastname} validated : ${user.validated}.`,
+    );
+    try {
+      Logger.log(user);
+      await this.accountsRepository.update(uuid, user);
+    } catch (err) {
+      Logger.error('mailModule', err);
+      throw new InternalServerErrorException(err);
+    }
   }
 }
