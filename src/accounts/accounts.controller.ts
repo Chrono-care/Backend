@@ -7,10 +7,12 @@ import {
   Body,
   ValidationPipe,
   Param,
+  Query,
   Patch,
   Delete,
   UseGuards,
   Request,
+  Logger,
 } from '@nestjs/common';
 import { Account } from './entities/account.entity';
 import { Response } from 'express';
@@ -215,5 +217,16 @@ export class AccountsController {
     return response
       .status(HttpStatus.OK)
       .json(await this.accountsService.getSubscribedForums(uuid));
+  }
+
+  @Get('/validate/email')
+  async validateEmail(
+    @Res() response: Response,
+    @Request() request: IAccountInfoFromRequest,
+    @Query('uuid') uuid: string,
+  ): Promise<Response> {
+    Logger.log(uuid);
+    await this.accountsService.validateEmail(uuid);
+    return response.status(HttpStatus.OK).json({ message: 'email validated.' });
   }
 }
