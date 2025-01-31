@@ -18,6 +18,9 @@ export class Reply {
   @Column()
   content: string;
 
+  @Column({ default: false })
+  is_archived: boolean;
+
   @ManyToOne(() => Account, (account) => account.replies)
   author: Account;
 
@@ -25,7 +28,7 @@ export class Reply {
   thread: Thread;
 
   @ManyToOne(() => Reply, (reply) => reply.responses, { nullable: true })
-  responseTo: Reply | null;
+  responseTo: Reply | null = null;
 
   @OneToMany(() => Reply, (reply) => reply.responseTo)
   responses: Reply[];
