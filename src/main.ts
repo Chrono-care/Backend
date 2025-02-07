@@ -11,6 +11,7 @@ async function bootstrap(): Promise<void> {
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
+    allowedHeaders: 'Content-Type, Authorization'
   });
   await app.listen(4000);
 }
