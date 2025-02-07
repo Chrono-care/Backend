@@ -4,14 +4,10 @@ import { AppModule } from './app.module';
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://punio.eu',
-      'https://chronocare.punio.eu'
-    ],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
-    allowedHeaders: 'Content-Type, Authorization'
+    allowedHeaders: "*"
   });
   await app.listen(4000);
 }
