@@ -7,6 +7,7 @@ async function bootstrap(): Promise<void> {
     origin: [
       'http://localhost:3000',
       'http://punio.eu',
+      'https://chronocare.punio.eu'
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
