@@ -1,4 +1,6 @@
 import { Account } from '../../accounts/entities/account.entity';
+import { Forum } from '../../forums/entities/forum.entity';
+import { VoteThread } from '../../votethread/entities/votethread.entity';
 import {
   Entity,
   Column,
@@ -6,9 +8,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
-import { instanceToPlain } from 'class-transformer';
-import { Forum } from '../../forums/entities/forum.entity';
+import { Expose, instanceToPlain } from 'class-transformer';
 
 @Entity()
 export class Thread {
@@ -23,9 +25,6 @@ export class Thread {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   imageUrl: string;
-
-  @Column({ type: 'decimal', precision: 5, scale: 2, nullable: true })
-  ratio: number;
 
   @Column({ type: 'boolean', default: false })
   is_archived: boolean;
@@ -42,7 +41,23 @@ export class Thread {
   @ManyToOne(() => Forum, (forum) => forum.threads)
   forum: Forum;
 
+  @OneToMany(() => VoteThread, (votethread) => votethread.thread, {
+    eager: true,
+  })
+  votethreads: VoteThread[];
+
+  @Expose()
+  get ratio(): number {
+    if (!this.votethreads || this.votethreads.length === 0) return 0;
+
+    return this.votethreads.reduce(
+      (sum, vote) => sum + (vote.voteType ? 1 : -1),
+      0,
+    );
+  }
+
   toJSON(): Record<string, unknown> {
-    return instanceToPlain(this);
+    const plain = instanceToPlain(this);
+    return { ...plain, ratio: this.ratio };
   }
 }

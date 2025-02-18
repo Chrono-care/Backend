@@ -266,14 +266,14 @@
 
 ```json
 [
-    {
-        "id": 1,
-        "title": "Test 15",
-        "description": "Lorem Ipsum Dolor",
-        "img_url": "https://test.test.ts/blabla.png",
-        "creation_date": "2025-01-29T13:36:51.802Z",
-        "is_archived": false
-    }
+  {
+    "id": 1,
+    "title": "Test 15",
+    "description": "Lorem Ipsum Dolor",
+    "img_url": "https://test.test.ts/blabla.png",
+    "creation_date": "2025-01-29T13:36:51.802Z",
+    "is_archived": false
+  }
 ]
 ```
 
@@ -290,14 +290,14 @@
 
 ```json
 [
-    {
-        "id": 1,
-        "title": "Test 15",
-        "description": "Lorem Ipsum Dolor",
-        "img_url": "https://test.test.ts/blabla.png",
-        "creation_date": "2025-01-29T13:36:51.802Z",
-        "is_archived": false
-    }
+  {
+    "id": 1,
+    "title": "Test 15",
+    "description": "Lorem Ipsum Dolor",
+    "img_url": "https://test.test.ts/blabla.png",
+    "creation_date": "2025-01-29T13:36:51.802Z",
+    "is_archived": false
+  }
 ]
 ```
 
@@ -494,16 +494,16 @@
 
 ```json
 [
-    {
-        "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
-        "email": "pascal.test@test.bla",
-        "firstname": "Pascal",
-        "lastname": "Test",
-        "phone": "+33609090909",
-        "karma": 0,
-        "global_bantime": "0",
-        "validated": false
-    }
+  {
+    "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
+    "email": "pascal.test@test.bla",
+    "firstname": "Pascal",
+    "lastname": "Test",
+    "phone": "+33609090909",
+    "karma": 0,
+    "global_bantime": "0",
+    "validated": false
+  }
 ]
 ```
 
@@ -514,26 +514,26 @@
 
 ```json
 {
-    "account": {
-        "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
-        "email": "pascal.test@test.bla",
-        "firstname": "Pascal",
-        "lastname": "Test",
-        "phone": "+33609090909",
-        "karma": 0,
-        "global_bantime": "0",
-        "validated": false
-    },
-    "forum": {
-        "id": 1,
-        "title": "Test 15",
-        "description": "Lorem Ipsum Dolor",
-        "img_url": "https://test.test.ts/blabla.png",
-        "creation_date": "2025-01-29T13:36:51.802Z",
-        "is_archived": false
-    },
+  "account": {
+    "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
+    "email": "pascal.test@test.bla",
+    "firstname": "Pascal",
+    "lastname": "Test",
+    "phone": "+33609090909",
+    "karma": 0,
+    "global_bantime": "0",
+    "validated": false
+  },
+  "forum": {
     "id": 1,
-    "creation_date": "2025-01-29T13:50:40.148Z"
+    "title": "Test 15",
+    "description": "Lorem Ipsum Dolor",
+    "img_url": "https://test.test.ts/blabla.png",
+    "creation_date": "2025-01-29T13:36:51.802Z",
+    "is_archived": false
+  },
+  "id": 1,
+  "creation_date": "2025-01-29T13:50:40.148Z"
 }
 ```
 
@@ -550,26 +550,26 @@
 
 ```json
 {
-    "account": {
-        "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
-        "email": "pascal.test@test.bla",
-        "firstname": "Pascal",
-        "lastname": "Test",
-        "phone": "+33609090909",
-        "karma": 0,
-        "global_bantime": "0",
-        "validated": false
-    },
-    "forum": {
-        "id": 1,
-        "title": "Test 15",
-        "description": "Lorem Ipsum Dolor",
-        "img_url": "https://test.test.ts/blabla.png",
-        "creation_date": "2025-01-29T13:36:51.802Z",
-        "is_archived": false
-    },
+  "account": {
+    "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
+    "email": "pascal.test@test.bla",
+    "firstname": "Pascal",
+    "lastname": "Test",
+    "phone": "+33609090909",
+    "karma": 0,
+    "global_bantime": "0",
+    "validated": false
+  },
+  "forum": {
     "id": 1,
-    "creation_date": "2025-01-29T13:50:40.148Z"
+    "title": "Test 15",
+    "description": "Lorem Ipsum Dolor",
+    "img_url": "https://test.test.ts/blabla.png",
+    "creation_date": "2025-01-29T13:36:51.802Z",
+    "is_archived": false
+  },
+  "id": 1,
+  "creation_date": "2025-01-29T13:50:40.148Z"
 }
 ```
 
@@ -579,7 +579,7 @@
 ### Response
 
 {
-    "creation_date": "2025-01-29T13:50:40.148Z"
+"creation_date": "2025-01-29T13:50:40.148Z"
 }
 
 ### Query parameters
@@ -595,13 +595,14 @@
 
 ```json
 {
-    "creation_date": "2025-01-29T13:50:40.148Z"
+  "creation_date": "2025-01-29T13:50:40.148Z"
 }
 ```
 
 </details>
 
 ## Thread
+
 <details><summary>GET /thread</summary>
   
 ### Response
@@ -610,16 +611,15 @@
 {
   "totalItems": 1,
   "items": [
-        {
-            "id": 1,
-            "title": "Thread Test",
-            "content": "Thread content",
-            "imageUrl": "https://blablatest12312.fr/test/img.png",
-            "ratio": null,
-            "is_archived": false,
-            "createdAt": "2025-01-29T14:27:19.629Z",
-            "updatedAt": "2025-01-29T14:27:19.629Z"
-        }
+    {
+      "id": 1,
+      "title": "Thread Test",
+      "content": "Thread content",
+      "imageUrl": "https://blablatest12312.fr/test/img.png",
+      "is_archived": false,
+      "createdAt": "2025-01-29T14:27:19.629Z",
+      "updatedAt": "2025-01-29T14:27:19.629Z"
+    }
   ],
   "page": 0,
   "size": 15
@@ -686,32 +686,31 @@
 
 ```json
 {
-    "title": "Thread Test1",
-    "content": "Thread content",
-    "imageUrl": "https://blablatest12312.fr/test/img.png",
-    "author": {
-        "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
-        "email": "pascal.test@test.bla",
-        "firstname": "Pascal",
-        "lastname": "Test",
-        "phone": "+33609090909",
-        "karma": 0,
-        "global_bantime": "0",
-        "validated": false
-    },
-    "forum": {
-        "id": 1,
-        "title": "Test 15",
-        "description": "Lorem Ipsum Dolor",
-        "img_url": "https://test.test.ts/blabla.png",
-        "creation_date": "2025-01-29T13:36:51.802Z",
-        "is_archived": false
-    },
-    "ratio": null,
-    "id": 2,
-    "is_archived": false,
-    "createdAt": "2025-01-29T14:37:24.011Z",
-    "updatedAt": "2025-01-29T14:37:24.011Z"
+  "title": "Thread Test1",
+  "content": "Thread content",
+  "imageUrl": "https://blablatest12312.fr/test/img.png",
+  "author": {
+    "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
+    "email": "pascal.test@test.bla",
+    "firstname": "Pascal",
+    "lastname": "Test",
+    "phone": "+33609090909",
+    "karma": 0,
+    "global_bantime": "0",
+    "validated": false
+  },
+  "forum": {
+    "id": 1,
+    "title": "Test 15",
+    "description": "Lorem Ipsum Dolor",
+    "img_url": "https://test.test.ts/blabla.png",
+    "creation_date": "2025-01-29T13:36:51.802Z",
+    "is_archived": false
+  },
+  "id": 2,
+  "is_archived": false,
+  "createdAt": "2025-01-29T14:37:24.011Z",
+  "updatedAt": "2025-01-29T14:37:24.011Z"
 }
 ```
 
@@ -721,11 +720,11 @@
 
 ```json
 {
-    "title": "Thread Test1",
-    "content": "Thread content",
-    "imageUrl": "https://blablatest12312.fr/test/img.png",
-    "is_archived": false,
-    "forumId": 1
+  "title": "Thread Test1",
+  "content": "Thread content",
+  "imageUrl": "https://blablatest12312.fr/test/img.png",
+  "is_archived": false,
+  "forumId": 1
 }
 ```
 
@@ -736,32 +735,31 @@
 
 ```json
 {
-    "title": "Thread Test1",
-    "content": "Thread content",
-    "imageUrl": "https://blablatest12312.fr/test/img.png",
-    "author": {
-        "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
-        "email": "pascal.test@test.bla",
-        "firstname": "Pascal",
-        "lastname": "Test",
-        "phone": "+33609090909",
-        "karma": 0,
-        "global_bantime": "0",
-        "validated": false
-    },
-    "forum": {
-        "id": 1,
-        "title": "Test 15",
-        "description": "Lorem Ipsum Dolor",
-        "img_url": "https://test.test.ts/blabla.png",
-        "creation_date": "2025-01-29T13:36:51.802Z",
-        "is_archived": false
-    },
-    "ratio": null,
-    "id": 2,
-    "is_archived": false,
-    "createdAt": "2025-01-29T14:37:24.011Z",
-    "updatedAt": "2025-01-29T14:37:24.011Z"
+  "title": "Thread Test1",
+  "content": "Thread content",
+  "imageUrl": "https://blablatest12312.fr/test/img.png",
+  "author": {
+    "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
+    "email": "pascal.test@test.bla",
+    "firstname": "Pascal",
+    "lastname": "Test",
+    "phone": "+33609090909",
+    "karma": 0,
+    "global_bantime": "0",
+    "validated": false
+  },
+  "forum": {
+    "id": 1,
+    "title": "Test 15",
+    "description": "Lorem Ipsum Dolor",
+    "img_url": "https://test.test.ts/blabla.png",
+    "creation_date": "2025-01-29T13:36:51.802Z",
+    "is_archived": false
+  },
+  "id": 2,
+  "is_archived": false,
+  "createdAt": "2025-01-29T14:37:24.011Z",
+  "updatedAt": "2025-01-29T14:37:24.011Z"
 }
 ```
 
@@ -773,13 +771,14 @@
 
 ```json
 {
-    "title": "Thread Test1",
-    "content": "Thread content",
-    "imageUrl": "https://blablatest12312.fr/test/img.png",
-    "is_archived": false,
-    "forumId": 1
+  "title": "Thread Test1",
+  "content": "Thread content",
+  "imageUrl": "https://blablatest12312.fr/test/img.png",
+  "is_archived": false,
+  "forumId": 1
 }
 ```
+
 </details>
 <details><summary>DELETE /thread/archive/:id</summary>
   
@@ -787,32 +786,31 @@
 
 ```json
 {
-    "title": "Thread Test1",
-    "content": "Thread content",
-    "imageUrl": "https://blablatest12312.fr/test/img.png",
-    "author": {
-        "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
-        "email": "pascal.test@test.bla",
-        "firstname": "Pascal",
-        "lastname": "Test",
-        "phone": "+33609090909",
-        "karma": 0,
-        "global_bantime": "0",
-        "validated": false
-    },
-    "forum": {
-        "id": 1,
-        "title": "Test 15",
-        "description": "Lorem Ipsum Dolor",
-        "img_url": "https://test.test.ts/blabla.png",
-        "creation_date": "2025-01-29T13:36:51.802Z",
-        "is_archived": false
-    },
-    "ratio": null,
-    "id": 2,
-    "is_archived": true,
-    "createdAt": "2025-01-29T14:37:24.011Z",
-    "updatedAt": "2025-01-29T14:37:24.011Z"
+  "title": "Thread Test1",
+  "content": "Thread content",
+  "imageUrl": "https://blablatest12312.fr/test/img.png",
+  "author": {
+    "uuid": "0790ad06-6c39-4196-9ffc-6776eaae839a",
+    "email": "pascal.test@test.bla",
+    "firstname": "Pascal",
+    "lastname": "Test",
+    "phone": "+33609090909",
+    "karma": 0,
+    "global_bantime": "0",
+    "validated": false
+  },
+  "forum": {
+    "id": 1,
+    "title": "Test 15",
+    "description": "Lorem Ipsum Dolor",
+    "img_url": "https://test.test.ts/blabla.png",
+    "creation_date": "2025-01-29T13:36:51.802Z",
+    "is_archived": false
+  },
+  "id": 2,
+  "is_archived": true,
+  "createdAt": "2025-01-29T14:37:24.011Z",
+  "updatedAt": "2025-01-29T14:37:24.011Z"
 }
 ```
 
@@ -823,4 +821,3 @@
 - set (optional, true by default): boolean used to specify a value to is_archived.
 
 </details>
-

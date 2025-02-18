@@ -165,6 +165,25 @@ describe('End-to-end Testing', () => {
         .expect(200);
       expect(res.body.is_archived).toBe(true);
     });
+
+    it('should vote a thread (/thread/vote)', async () => {
+      const res = await request(app.getHttpServer())
+        .patch('/thread/vote')
+        .set('Authorization', `Bearer ${token}`)
+        .send({
+          threadId: threadId,
+          voteType: true,
+        });
+      expect(res.body).toHaveProperty('votethreads');
+    });
+
+    it('should remove all vote from a thread (/thread/vote/remove/:id)', async () => {
+      const res = await request(app.getHttpServer())
+        .patch('/thread/vote/remove/' + threadId)
+        .set('Authorization', `Bearer ${token}`)
+        .expect(200);
+      expect(res.body.votethreads).toHaveProperty([]);
+    });
   });
 
   describe('Accounts (cleaning)', () => {

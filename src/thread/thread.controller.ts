@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   DefaultValuePipe,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -33,6 +34,7 @@ import {
 import { IAccountInfoFromRequest } from '../security/interfaces/accountInfoFromRequest.interface';
 import { JwtAuthGuard } from '../security/strategies/guards/jwt-auth.guard';
 import { UpdateThreadDto } from './dto/update-thread.dto';
+import { CreateVoteThreadDto } from 'src/votethread/dto/create-votethread.dto';
 
 const authorizedFields = ['id', 'title', 'content', 'is_archived'];
 @Controller('thread')
@@ -92,5 +94,30 @@ export class ThreadController {
     return response
       .status(HttpStatus.OK)
       .json(await this.threadService.archiveThread(id, set));
+  }
+
+  @Post('/vote')
+  @UseGuards(JwtAuthGuard)
+  async vote(
+    @Res() response: Response,
+    @Request() request: IAccountInfoFromRequest,
+    @Body(new ValidationPipe()) voteData: CreateVoteThreadDto,
+  ): Promise<Response> {
+    const updatedThread = await this.threadService.voteThread(
+      request.user.userId,
+      voteData.threadId,
+      voteData.voteType,
+    );
+    return response.status(HttpStatus.OK).json(updatedThread);
+  }
+
+  @Delete('/vote/remove/:id')
+  @UseGuards(JwtAuthGuard)
+  async removeAllVotes(
+    @Res() response: Response,
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<Response> {
+    const updatedThread = await this.threadService.removeAllVotesFromThread(id);
+    return response.status(HttpStatus.OK).json(updatedThread);
   }
 }

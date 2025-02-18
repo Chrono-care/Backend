@@ -11,11 +11,15 @@ import { ISorting } from '../common/decorators/sortingParams.decorator';
 import { IFiltering } from '../common/decorators/filteringParams.decorator';
 import { getOrder, getWhere } from '../common/helpers/orderORM.helper';
 import { UpdateThreadDto } from './dto/update-thread.dto';
+import { VoteThread } from 'src/votethread/entities/votethread.entity';
 @Injectable()
 export class ThreadService {
   constructor(
     @InjectRepository(Thread)
     private readonly threadRepository: Repository<Thread>,
+
+    @InjectRepository(VoteThread)
+    private readonly votethreadRepository: Repository<VoteThread>,
 
     @InjectRepository(Account)
     private readonly accountRepository: Repository<Account>,
@@ -36,10 +40,13 @@ export class ThreadService {
       order,
       take: limit,
       skip: offset,
+      relations: ['votethreads'], // Ensure votes are loaded
     });
+
     if (total === 0) {
-      throw new NotFoundException(`Aucun forum trouvé.`);
+      throw new NotFoundException(`Aucun Thread trouvé.`);
     }
+
     return {
       totalItems: total,
       items: threads,
@@ -112,5 +119,67 @@ export class ThreadService {
       throw new NotFoundException(`Le forum ${id} n'existe pas.`);
     }
     return await this.threadRepository.save({ ...thread, is_archived: set });
+  }
+
+  async voteThread(
+    uuid: string,
+    threadId: number,
+    voteType: boolean | null, // Allow null to remove vote
+  ): Promise<Thread> {
+    const thread = await this.threadRepository.findOne({
+      where: { id: threadId },
+      relations: ['votethreads'],
+    });
+
+    if (!thread) {
+      throw new NotFoundException('Thread not found');
+    }
+
+    const author = await this.accountRepository.findOne({ where: { uuid } });
+
+    if (!author) {
+      throw new NotFoundException('Account not found');
+    }
+
+    const existingVote = await this.votethreadRepository.findOne({
+      where: { author: { uuid: author.uuid }, thread: { id: thread.id } },
+    });
+
+    if (existingVote) {
+      if (voteType === null) {
+        await this.votethreadRepository.remove(existingVote);
+      } else if (existingVote.voteType !== voteType) {
+        existingVote.voteType = voteType;
+        await this.votethreadRepository.save(existingVote);
+      }
+    } else {
+      if (voteType !== null) {
+        const newVote = this.votethreadRepository.create({
+          voteType,
+          author,
+          thread,
+        });
+        await this.votethreadRepository.save(newVote);
+      }
+    }
+    return this.threadRepository.findOne({
+      where: { id: threadId },
+      relations: ['votethreads'],
+    });
+  }
+
+  async removeAllVotesFromThread(id: number): Promise<Thread> {
+    const thread = await this.threadRepository.findOne({
+      where: { id: id },
+      relations: ['votethreads'],
+    });
+    if (!thread) {
+      throw new NotFoundException('Thread not found');
+    }
+    await this.votethreadRepository.delete({ thread: { id: id } });
+    return this.threadRepository.findOne({
+      where: { id: id },
+      relations: ['votethreads'],
+    });
   }
 }
