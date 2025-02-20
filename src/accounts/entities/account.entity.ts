@@ -12,7 +12,7 @@ import * as argon2 from 'argon2';
 import { Subscribe } from 'src/forums/entities/subscribe.entity';
 import { Exclude, instanceToPlain } from 'class-transformer';
 import { Thread } from '../../thread/entities/thread.entity';
-import { VoteThread } from '../../votethread/entities/votethread.entity';
+import { VoteThread } from '../../thread/entities/votethread.entity';
 
 @Entity()
 export class Account {

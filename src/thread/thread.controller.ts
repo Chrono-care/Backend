@@ -19,6 +19,7 @@ import {
 import { Response } from 'express';
 import { ThreadService } from './thread.service';
 import { CreateThreadDto } from './dto/create-thread.dto';
+import { CreateVoteThreadDto } from './dto/create-votethread.dto';
 import {
   IPagination,
   PaginationParams,
@@ -34,7 +35,6 @@ import {
 import { IAccountInfoFromRequest } from '../security/interfaces/accountInfoFromRequest.interface';
 import { JwtAuthGuard } from '../security/strategies/guards/jwt-auth.guard';
 import { UpdateThreadDto } from './dto/update-thread.dto';
-import { CreateVoteThreadDto } from 'src/votethread/dto/create-votethread.dto';
 
 const authorizedFields = ['id', 'title', 'content', 'is_archived'];
 @Controller('thread')

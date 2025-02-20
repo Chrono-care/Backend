@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateThreadDto } from './dto/create-thread.dto';
 import { Thread } from './entities/thread.entity';
+import { VoteThread } from './entities/votethread.entity';
 import { Account } from '../accounts/entities/account.entity';
 import { Forum } from '../forums/entities/forum.entity';
 import { PaginatedResource } from '../common/dto/paginated-resource.dto';
@@ -11,7 +12,6 @@ import { ISorting } from '../common/decorators/sortingParams.decorator';
 import { IFiltering } from '../common/decorators/filteringParams.decorator';
 import { getOrder, getWhere } from '../common/helpers/orderORM.helper';
 import { UpdateThreadDto } from './dto/update-thread.dto';
-import { VoteThread } from 'src/votethread/entities/votethread.entity';
 @Injectable()
 export class ThreadService {
   constructor(

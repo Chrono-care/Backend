@@ -1,6 +1,6 @@
 import { Account } from '../../accounts/entities/account.entity';
 import { Forum } from '../../forums/entities/forum.entity';
-import { VoteThread } from '../../votethread/entities/votethread.entity';
+import { VoteThread } from './votethread.entity';
 import {
   Entity,
   Column,
