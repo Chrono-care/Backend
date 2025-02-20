@@ -6,7 +6,8 @@ import * as fsStore from 'cache-manager-fs-hash';
 import { AccountsModule } from './accounts/accounts.module';
 import { SecurityModule } from './security/security.module';
 import { ThreadModule } from './thread/thread.module';
-import { forumsModule } from './forums/forums.module';
+import { ForumsModule } from './forums/forums.module';
+import { ReplyModule } from './reply/reply.module';
 
 @Module({
   imports: [
@@ -23,9 +24,9 @@ import { forumsModule } from './forums/forums.module';
         type: 'postgres',
         host: configService.get<string>('POSTGRES_HOST'),
         port: parseInt(configService.get<string>('POSTGRES_PORT'), 10) || 5432,
-        username: configService.get<string>('POSTGRES_USER'),
-        password: configService.get<string>('POSTGRES_PASSWORD'),
-        database: configService.get<string>('POSTGRES_DB'),
+        username: configService.get<string>('POSTGRES_DB_USER'),
+        password: configService.get<string>('POSTGRES_DB_PASS'),
+        database: configService.get<string>('POSTGRES_DB_NAME'),
         entities: [__dirname + '/**/**/*.entity.{js,ts}'],
         synchronize: true,
       }),
@@ -34,7 +35,8 @@ import { forumsModule } from './forums/forums.module';
     AccountsModule,
     SecurityModule,
     ThreadModule,
-    forumsModule,
+    ForumsModule,
+    ReplyModule,
   ],
   controllers: [],
   providers: [],

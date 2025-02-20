@@ -11,4 +11,4 @@ import { Account } from 'src/accounts/entities/account.entity';
   controllers: [forumsController],
   providers: [ForumsService],
 })
-export class forumsModule {}
+export class ForumsModule {}
