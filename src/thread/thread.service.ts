@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateThreadDto } from './dto/create-thread.dto';
@@ -124,7 +128,7 @@ export class ThreadService {
   async voteThread(
     uuid: string,
     threadId: number,
-    voteType: boolean | null, // Allow null to remove vote
+    voteType: boolean, // Allow null to remove vote
   ): Promise<Thread> {
     const thread = await this.threadRepository.findOne({
       where: { id: threadId },
@@ -160,6 +164,8 @@ export class ThreadService {
           thread,
         });
         await this.votethreadRepository.save(newVote);
+      } else {
+        throw new BadRequestException('VoteType cannot be null');
       }
     }
     return this.threadRepository.findOne({

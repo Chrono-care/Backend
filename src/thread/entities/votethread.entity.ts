@@ -14,8 +14,8 @@ export class VoteThread {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ type: 'boolean', nullable: true })
-  voteType: boolean | null;
+  @Column({ type: 'boolean' })
+  voteType: boolean;
 
   @CreateDateColumn()
   createdAt: Date;
