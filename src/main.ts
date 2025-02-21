@@ -12,7 +12,8 @@ async function bootstrap(): Promise<void> {
     credentials: true,
     allowedHeaders: '*',
   });
-  await app.listen(PORT);
-  Logger.verbose(`App listenning on port ${PORT}.`);
+  await app.listen(PORT, () => {
+    Logger.verbose(`App listenning on port ${PORT}.`);
+  });
 }
 bootstrap();
