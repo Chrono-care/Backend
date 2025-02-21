@@ -27,7 +27,7 @@ import { forumsModule } from './forums/forums.module';
         password: configService.get<string>('POSTGRES_PASSWORD'),
         database: configService.get<string>('POSTGRES_DB'),
         entities: [__dirname + '/**/**/*.entity.{js,ts}'],
-        synchronize: true,
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),
