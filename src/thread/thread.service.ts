@@ -36,6 +36,7 @@ export class ThreadService {
       order,
       take: limit,
       skip: offset,
+      relations: ['author'],
     });
     if (total === 0) {
       throw new NotFoundException(`Aucun forum trouvé.`);
